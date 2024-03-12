@@ -39,6 +39,7 @@ class Snake {
     private Bitmap mBitmapHeadLeft;
     private Bitmap mBitmapHeadUp;
     private Bitmap mBitmapHeadDown;
+    private Bitmap mBitmapBackground;
 
     // A bitmap for the body
     private Bitmap mBitmapBody;
@@ -55,6 +56,8 @@ class Snake {
         mMoveRange = mr;
 
         // Create and scale the bitmaps
+
+
         mBitmapHeadRight = BitmapFactory
                 .decodeResource(context.getResources(),
                         R.drawable.head);

@@ -3,10 +3,14 @@ package com.csc133.snakeysnake;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Picture;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -47,12 +51,15 @@ class SnakeGame extends SurfaceView implements Runnable{
     private Snake mSnake;
     // And an apple
     private Apple mApple;
+    private Context mContext;
 
 
     // This is the constructor method that gets called
     // from SnakeActivity
     public SnakeGame(Context context, Point size) {
         super(context);
+
+        this.mContext = context;
 
         // Work out how many pixels each block is
         int blockSize = size.x / NUM_BLOCKS_WIDE;
@@ -134,7 +141,7 @@ class SnakeGame extends SurfaceView implements Runnable{
                 }
             }
 
-            draw();
+            draw(mContext);
         }
     }
 
@@ -188,20 +195,27 @@ class SnakeGame extends SurfaceView implements Runnable{
             // Pause the game ready to start again
             mSP.play(mCrashID, 1, 1, 0, 0, 1);
 
-            mPaused =true;
+            mPaused =true;  // Set to false for God mode ;)
         }
 
     }
 
 
     // Do all the drawing
-    public void draw() {
+    public void draw(Context context) {
         // Get a lock on the mCanvas
         if (mSurfaceHolder.getSurface().isValid()) {
             mCanvas = mSurfaceHolder.lockCanvas();
 
+            Bitmap mBitmapBackground = BitmapFactory
+                    .decodeResource(context.getResources(),
+                            R.drawable.background);
+
+            mCanvas.drawBitmap(mBitmapBackground, -1920, -1200, mPaint);
+
+
             // Fill the screen with a color
-            mCanvas.drawColor(Color.argb(255, 26, 128, 182));
+            //mCanvas.drawColor(Color.argb(255, 226, 83, 68));
 
             // Set the size and color of the mPaint for the text
             mPaint.setColor(Color.argb(255, 255, 255, 255));
