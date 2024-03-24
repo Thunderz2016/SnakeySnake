@@ -53,6 +53,8 @@ class SnakeGame extends SurfaceView implements Runnable{
     private Apple mApple;
     private Context mContext;
 
+    HUD mHUD;
+
 
     // This is the constructor method that gets called
     // from SnakeActivity
@@ -99,6 +101,7 @@ class SnakeGame extends SurfaceView implements Runnable{
         mSurfaceHolder = getHolder();
         mPaint = new Paint();
 
+        //mHUD = new HUD(size);
         // Call the constructors of our two game objects
         mApple = new Apple(context,
                 new Point(NUM_BLOCKS_WIDE,
@@ -203,16 +206,20 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     // Do all the drawing
     public void draw(Context context) {
+
         // Get a lock on the mCanvas
         if (mSurfaceHolder.getSurface().isValid()) {
             mCanvas = mSurfaceHolder.lockCanvas();
 
+            // Create a background bitmap
             Bitmap mBitmapBackground = BitmapFactory
                     .decodeResource(context.getResources(),
                             R.drawable.background);
 
+            // Draw the background bitmap
             mCanvas.drawBitmap(mBitmapBackground, -1920, -1200, mPaint);
 
+            Rect pauseButton = new Rect();
 
             // Fill the screen with a color
             //mCanvas.drawColor(Color.argb(255, 226, 83, 68));
@@ -228,6 +235,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             mApple.draw(mCanvas, mPaint);
             mSnake.draw(mCanvas, mPaint);
 
+
             // Draw some text while paused
             if(mPaused){
 
@@ -242,7 +250,9 @@ class SnakeGame extends SurfaceView implements Runnable{
                                 getString(R.string.tap_to_play),
                         200, 700, mPaint);
             }
-
+            // Draw text while paused (game over or manual pause)
+//            if(mPaused)
+//                mHUD.draw(mCanvas, mPaint, mPaused, mSnake.detectDeath());
 
             // Unlock the mCanvas and reveal the graphics for this frame
             mSurfaceHolder.unlockCanvasAndPost(mCanvas);
