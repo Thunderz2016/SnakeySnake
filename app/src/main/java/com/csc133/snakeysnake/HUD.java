@@ -12,7 +12,7 @@ public class HUD {
     private int mTextFormatting;
     private int mScreenHeight;
     private int mScreenWidth;
-    private ArrayList<Rect> buttons;
+    private ArrayList<Rect> buttons = new ArrayList<Rect>();
 
     HUD(Point size) {
         mScreenHeight = size.y;
@@ -29,32 +29,41 @@ public class HUD {
 
         Rect pause = new Rect(
                 mScreenWidth - buttonPadding - buttonWidth,
-                buttonPadding,
+                mScreenHeight - buttonHeight - buttonPadding,
                 mScreenWidth - buttonPadding,
-                buttonPadding + buttonHeight);
+                mScreenHeight - buttonPadding);
 
         buttons.add(pause);
     }
 
     void draw(Canvas c, Paint p, boolean manualPaused, boolean died) {
-        p.setColor(Color.argb(255, 255, 255, 255));
+
         p.setTextSize(250);
+//        c.drawText("");
 
-        if(manualPaused) {
-            c.drawText("PAUSED", mScreenWidth / 3, mScreenHeight / 2, p);
-        }
-
-        if(died) {
-            c.drawText("Tap To Play!", 200, 700, p);
-        }
-
-        //drawControls(c, p);
+        drawControls(c, p);
     }
 
     void drawControls(Canvas c, Paint p) {
+        p.setColor(Color.argb(255, 77, 77, 77));
+        p.setTextSize(40);
+
         for(Rect rect : buttons) {
             c.drawRect(rect.left, rect.top, rect.right, rect.bottom, p);
+            drawButtonText("Pause", c, p, rect);
         }
+        p.setTextAlign(Paint.Align.LEFT);   // Reset alignment for all other text
+    }
+
+    private void drawButtonText(String text, Canvas c, Paint p, Rect r) {
+        p.setTextSize(50);
+        p.setTextAlign(Paint.Align.CENTER);
+        p.setColor(Color.argb(255, 255, 255, 255));
+        int width = r.width();
+
+        int charsCount = p.breakText(text, true, width, null);
+        int start = (text.length()-charsCount)/2;
+        c.drawText(text,start,start+charsCount,r.exactCenterX(),r.exactCenterY(),p);
     }
 
 }

@@ -29,6 +29,7 @@ class SnakeGame extends SurfaceView implements Runnable{
     // Is the game currently playing and or paused?
     private volatile boolean mPlaying = false;
     private volatile boolean mPaused = true;
+    private volatile boolean mManualPaused = false;
 
     // for playing sound effects
     private SoundPool mSP;
@@ -62,6 +63,7 @@ class SnakeGame extends SurfaceView implements Runnable{
         super(context);
 
         this.mContext = context;
+
 
         // Work out how many pixels each block is
         int blockSize = size.x / NUM_BLOCKS_WIDE;
@@ -112,7 +114,7 @@ class SnakeGame extends SurfaceView implements Runnable{
                 new Point(NUM_BLOCKS_WIDE,
                         mNumBlocksHigh),
                 blockSize);
-
+        mHUD = new HUD(size);
     }
 
 
@@ -219,7 +221,6 @@ class SnakeGame extends SurfaceView implements Runnable{
             // Draw the background bitmap
             mCanvas.drawBitmap(mBitmapBackground, -1920, -1200, mPaint);
 
-            Rect pauseButton = new Rect();
 
             // Fill the screen with a color
             //mCanvas.drawColor(Color.argb(255, 226, 83, 68));
@@ -228,6 +229,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             mPaint.setColor(Color.argb(255, 255, 255, 255));
             mPaint.setTextSize(120);
 
+            //mHUD.drawControls(mCanvas, mPaint);
             // Draw the score
             mCanvas.drawText("" + mScore, 20, 120, mPaint);
 
@@ -235,7 +237,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             mApple.draw(mCanvas, mPaint);
             mSnake.draw(mCanvas, mPaint);
 
-
+            mHUD.drawControls(mCanvas, mPaint);
             // Draw some text while paused
             if(mPaused){
 
@@ -250,9 +252,19 @@ class SnakeGame extends SurfaceView implements Runnable{
                                 getString(R.string.tap_to_play),
                         200, 700, mPaint);
             }
-            // Draw text while paused (game over or manual pause)
-//            if(mPaused)
-//                mHUD.draw(mCanvas, mPaint, mPaused, mSnake.detectDeath());
+
+            // Draw text while MANUALLY paused
+            if(mManualPaused) {
+                // Set the size and color of the mPaint for the text
+                mPaint.setColor(Color.argb(255, 255, 255, 255));
+                mPaint.setTextSize(250);
+
+                // Draw the message
+                // We will give this an international upgrade soon
+                //mCanvas.drawText("Tap To Play!", 200, 700, mPaint);
+                mCanvas.drawText("PAUSED", 200, 700, mPaint);
+            }
+
 
             // Unlock the mCanvas and reveal the graphics for this frame
             mSurfaceHolder.unlockCanvasAndPost(mCanvas);
