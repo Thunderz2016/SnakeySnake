@@ -55,6 +55,7 @@ class SnakeGame extends SurfaceView implements Runnable{
     private Context mContext;
 
     HUD mHUD;
+    ButtonController mButtonController;
 
 
     // This is the constructor method that gets called
@@ -64,6 +65,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         this.mContext = context;
 
+        mButtonController = new ButtonController(this);
 
         // Work out how many pixels each block is
         int blockSize = size.x / NUM_BLOCKS_WIDE;
@@ -139,7 +141,7 @@ class SnakeGame extends SurfaceView implements Runnable{
     @Override
     public void run() {
         while (mPlaying) {
-            if(!mPaused) {
+            if(!mPaused && !mManualPaused) {
                 // Update 10 times a second
                 if (updateRequired()) {
                     update();
@@ -229,7 +231,6 @@ class SnakeGame extends SurfaceView implements Runnable{
             mPaint.setColor(Color.argb(255, 255, 255, 255));
             mPaint.setTextSize(120);
 
-            //mHUD.drawControls(mCanvas, mPaint);
             // Draw the score
             mCanvas.drawText("" + mScore, 20, 120, mPaint);
 
@@ -275,6 +276,7 @@ class SnakeGame extends SurfaceView implements Runnable{
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
+
                 if (mPaused) {
                     mPaused = false;
                     newGame();
@@ -283,8 +285,12 @@ class SnakeGame extends SurfaceView implements Runnable{
                     return true;
                 }
 
-                // Let the Snake class handle the input
-                mSnake.switchHeading(motionEvent);
+                if (!mManualPaused) {
+                    // Let the Snake class handle the input
+                    mSnake.switchHeading(motionEvent);
+                }
+
+                mButtonController.handleInput(motionEvent, mHUD.getButtons());
                 break;
 
             default:
@@ -311,5 +317,25 @@ class SnakeGame extends SurfaceView implements Runnable{
         mPlaying = true;
         mThread = new Thread(this);
         mThread.start();
+    }
+
+    public boolean getManualPaused() {
+        return mManualPaused;
+    }
+
+    public boolean getPaused() {
+        return mPaused;
+    }
+
+    public void setmManualPaused(boolean mManualPaused) {
+        this.mManualPaused = mManualPaused;
+    }
+
+    public void setmPaused(boolean mPaused) {
+        this.mPaused = mPaused;
+    }
+
+    public void setmPlaying(boolean mPlaying) {
+        this.mPlaying = mPlaying;
     }
 }
