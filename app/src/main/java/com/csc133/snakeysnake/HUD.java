@@ -14,6 +14,9 @@ public class HUD {
     private int mScreenWidth;
     private ArrayList<Rect> buttons = new ArrayList<Rect>();
 
+    //  Button index for pause button (Chapter 18)
+    static final int PAUSE = 0;
+
     HUD(Point size) {
         mScreenHeight = size.y;
         mScreenWidth = size.x;
@@ -64,6 +67,10 @@ public class HUD {
         int charsCount = p.breakText(text, true, width, null);
         int start = (text.length()-charsCount)/2;
         c.drawText(text,start,start+charsCount,r.exactCenterX(),r.exactCenterY(),p);
+    }
+
+    public ArrayList<Rect> getButtons() {
+        return buttons;
     }
 
 }
