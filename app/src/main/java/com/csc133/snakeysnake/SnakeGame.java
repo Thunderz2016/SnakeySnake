@@ -52,6 +52,8 @@ class SnakeGame extends SurfaceView implements Runnable{
     // And an apple
     private Apple mApple;
     private Context mContext;
+    //NEW
+    private Pause mPause;
 
 
     // This is the constructor method that gets called
@@ -106,6 +108,11 @@ class SnakeGame extends SurfaceView implements Runnable{
                 blockSize);
 
         mSnake = new Snake(context,
+                new Point(NUM_BLOCKS_WIDE,
+                        mNumBlocksHigh),
+                blockSize);
+        //NEW
+        mPause = new Pause(context,
                 new Point(NUM_BLOCKS_WIDE,
                         mNumBlocksHigh),
                 blockSize);
@@ -224,6 +231,9 @@ class SnakeGame extends SurfaceView implements Runnable{
             // Draw the score
             mCanvas.drawText("" + mScore, 20, 120, mPaint);
 
+            //NEW Draw the pause & resume button
+            mPause.draw(mCanvas, mPaint);
+
             // Draw the apple and the snake
             mApple.draw(mCanvas, mPaint);
             mSnake.draw(mCanvas, mPaint);
@@ -251,6 +261,10 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
+
+        //New
+        int action = motionEvent.getActionMasked();
+
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
                 if (mPaused) {
@@ -269,9 +283,41 @@ class SnakeGame extends SurfaceView implements Runnable{
                 break;
 
         }
-        return true;
-    }
+        // NEW
+        switch (action) {
+            case MotionEvent.ACTION_DOWN: {
+                float x = motionEvent.getX();
+                float y = motionEvent.getY();
 
+                // Compare the touch coordinates with the target coordinate
+                if (isTouchInsideBitmap(x, y)) {
+                    // Touch event happened exactly at the target coordinates
+                    // Do something here, the following is just a test
+                    mCanvas.drawText(getResources().
+                                    getString(R.string.tap_to_play),
+                            200, 700, mPaint);
+                } /*else {
+                    // Touch event did not occur at the target coordinates
+                    // Do something else here
+                }*/
+                break;
+            }
+        }
+        return true;
+
+    }
+    //NEW
+    private boolean isTouchInsideBitmap(float x, float y) {
+        // Get the bitmap's bounding box (assuming bitmapX, bitmapY, bitmapWidth, and bitmapHeight are known)
+        int bitmapX = 37; // X coordinate of the bitmap's top-left corner
+        int bitmapY = 0; // Y coordinate of the bitmap's top-left corner
+        int bitmapWidth = 150; // Width of the bitmap
+        int bitmapHeight = 150; // Height of the bitmap
+
+        // Check if touch coordinates are inside the bounding box of the bitmap
+        return x >= bitmapX && x < bitmapX + bitmapWidth &&
+                y >= bitmapY && y < bitmapY + bitmapHeight;
+    }
 
     // Stop the thread
     public void pause() {
