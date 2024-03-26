@@ -41,12 +41,10 @@ public class HUD {
         buttons.add(pause);
     }
 
-    void draw(Canvas c, Paint p, boolean manualPaused, boolean died) {
-
-        p.setTextSize(250);
-//        c.drawText("");
-
+    void draw(Canvas c, Paint p) {
         drawControls(c, p);
+        drawButtonText("Pause", c, p, buttons.get(PAUSE));
+        drawAuthors(c, p);
     }
 
     void drawControls(Canvas c, Paint p) {
