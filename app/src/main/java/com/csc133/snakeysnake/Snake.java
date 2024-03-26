@@ -39,7 +39,6 @@ class Snake implements Drawable {
     private Bitmap mBitmapHeadLeft;
     private Bitmap mBitmapHeadUp;
     private Bitmap mBitmapHeadDown;
-    private Bitmap mBitmapBackground;
 
     // A bitmap for the body
     private Bitmap mBitmapBody;

@@ -1,5 +1,6 @@
 package com.csc133.snakeysnake;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
