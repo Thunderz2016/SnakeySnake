@@ -57,6 +57,18 @@ public class HUD {
         }
         p.setTextAlign(Paint.Align.LEFT);   // Reset alignment for all other text
     }
+    void drawAuthors(Canvas c, Paint p) {
+        p.setColor(Color.argb(255, 77, 77, 77));
+        p.setTextSize(60);
+
+        p.setTextAlign(Paint.Align.RIGHT);
+        int namesWidth = mScreenWidth / 150;
+        int namesHeight = mScreenHeight / 12;
+        int namesPadding = mScreenWidth / 35;
+        c.drawText("Modified By: Hadia Amiri & Wenshen Zhong", mScreenWidth - namesPadding - namesWidth, namesPadding, p);
+
+        p.setTextAlign(Paint.Align.LEFT);
+    }
 
     private void drawButtonText(String text, Canvas c, Paint p, Rect r) {
         p.setTextSize(50);

@@ -233,12 +233,17 @@ class SnakeGame extends SurfaceView implements Runnable{
 
             // Draw the score
             mCanvas.drawText("" + mScore, 20, 120, mPaint);
-
+            // Draw the names
+            //mPaint.setTextSize(85);
+            //mCanvas.drawText("Hadia Amiri, Wenshen Zhong", 1800, 103, mPaint);
+            mPaint.setTextSize(120);
             // Draw the apple and the snake
             mApple.draw(mCanvas, mPaint);
             mSnake.draw(mCanvas, mPaint);
 
             mHUD.drawControls(mCanvas, mPaint);
+            //draw names using the method in HUD
+            mHUD.drawAuthors(mCanvas, mPaint);
             // Draw some text while paused
             if(mPaused){
 
