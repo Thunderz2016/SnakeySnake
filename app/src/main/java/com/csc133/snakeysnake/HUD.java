@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 
 import java.util.ArrayList;
 
@@ -26,10 +27,11 @@ public class HUD {
     }
 
     private void prepareControls() {
-        int buttonWidth = mScreenWidth / 14;
+        int buttonWidth = mScreenWidth / 10;
         int buttonHeight = mScreenHeight / 12;
         int buttonPadding = mScreenWidth / 90;
 
+        //  Bottom right: Pause button
         Rect pause = new Rect(
                 mScreenWidth - buttonPadding - buttonWidth,
                 mScreenHeight - buttonHeight - buttonPadding,
@@ -49,22 +51,23 @@ public class HUD {
 
     void drawControls(Canvas c, Paint p) {
         p.setColor(Color.argb(255, 77, 77, 77));
-        p.setTextSize(40);
+        p.setTextSize(5);
 
         for(Rect rect : buttons) {
             c.drawRect(rect.left, rect.top, rect.right, rect.bottom, p);
-            drawButtonText("Pause", c, p, rect);
+            drawButtonText("PAUSE", c, p, rect);
         }
         p.setTextAlign(Paint.Align.LEFT);   // Reset alignment for all other text
     }
     void drawAuthors(Canvas c, Paint p) {
-        p.setColor(Color.argb(255, 77, 77, 77));
-        p.setTextSize(60);
-
-        p.setTextAlign(Paint.Align.RIGHT);
         int namesWidth = mScreenWidth / 150;
         int namesHeight = mScreenHeight / 12;
         int namesPadding = mScreenWidth / 35;
+
+        p.setColor(Color.argb(255, 77, 77, 77));
+        p.setTextSize(60);
+        p.setTextAlign(Paint.Align.RIGHT);
+
         c.drawText("Modified By: Hadia Amiri & Wenshen Zhong", mScreenWidth - namesPadding - namesWidth, namesPadding, p);
 
         p.setTextAlign(Paint.Align.LEFT);

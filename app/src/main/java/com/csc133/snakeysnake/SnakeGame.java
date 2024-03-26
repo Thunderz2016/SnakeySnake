@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Picture;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -210,7 +211,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     // Do all the drawing
     public void draw(Context context) {
-
+        Typeface nes = Typeface.createFromAsset(context.getAssets(), "nes.otf");
         // Get a lock on the mCanvas
         if (mSurfaceHolder.getSurface().isValid()) {
             mCanvas = mSurfaceHolder.lockCanvas();
@@ -228,6 +229,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             //mCanvas.drawColor(Color.argb(255, 226, 83, 68));
 
             // Set the size and color of the mPaint for the text
+            mPaint.setTypeface(nes);
             mPaint.setColor(Color.argb(255, 255, 255, 255));
             mPaint.setTextSize(120);
 
@@ -249,7 +251,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
                 // Set the size and color of the mPaint for the text
                 mPaint.setColor(Color.argb(255, 255, 255, 255));
-                mPaint.setTextSize(250);
+                mPaint.setTextSize(170);
 
                 // Draw the message
                 // We will give this an international upgrade soon
