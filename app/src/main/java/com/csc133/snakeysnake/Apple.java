@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import java.util.Random;
 
-class Apple {
+class Apple implements Drawable{
 
     // The location of the apple on the grid
     // Not in pixels
@@ -54,7 +54,8 @@ class Apple {
     }
 
     // Draw the apple
-    void draw(Canvas canvas, Paint paint){
+    @Override
+    public void draw(Canvas canvas, Paint paint){
         canvas.drawBitmap(mBitmapApple,
                 location.x * mSize, location.y * mSize, paint);
 
