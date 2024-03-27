@@ -101,7 +101,6 @@ public class HUD extends Drawable {
 
     void drawPauseText(boolean gameOver, boolean manualPaused) {
         if(gameOver){
-
             // Set the size and color of the mPaint for the text
             mPaint.setColor(Color.argb(255, 255, 255, 255));
             mPaint.setTextSize(170);
