@@ -115,7 +115,7 @@ class SnakeGame extends SurfaceView implements Runnable{
                 new Point(NUM_BLOCKS_WIDE,
                         mNumBlocksHigh),
                 blockSize);
-        mHUD = new HUD(size);
+        mHUD = new HUD(size, mCanvas, mPaint);
     }
 
 
@@ -206,68 +206,30 @@ class SnakeGame extends SurfaceView implements Runnable{
     }
     // Do all the drawing
     public void draw(Context context) {
-        Typeface nes = Typeface.createFromAsset(context.getAssets(), "nes.otf");
+//        Typeface nes = Typeface.createFromAsset(context.getAssets(), "nes.otf");
+//        mPaint.setTypeface(nes);
         // Get a lock on the mCanvas
         if (mSurfaceHolder.getSurface().isValid()) {
             mCanvas = mSurfaceHolder.lockCanvas();
+            mHUD.setmCanvas(mCanvas);
 
-            // Create a background bitmap
-            Bitmap mBitmapBackground = BitmapFactory
-                    .decodeResource(context.getResources(),
-                            R.drawable.background);
+            mHUD.setFont(context, mPaint);
 
             // Draw the background bitmap
-            mCanvas.drawBitmap(mBitmapBackground, -1920, -1350, mPaint);
-
-
-            // Fill the screen with a color
-            //mCanvas.drawColor(Color.argb(255, 226, 83, 68));
-
-            // Set the size and color of the mPaint for the text
-            mPaint.setTypeface(nes);
-            mPaint.setColor(Color.argb(255, 255, 255, 255));
-            mPaint.setTextSize(120);
+            mHUD.drawBackgroundBitmap(context, mCanvas, mPaint);
 
             // Draw the score
-            mCanvas.drawText("" + mScore, 20, 120, mPaint);
-            // Draw the names
-            //mPaint.setTextSize(85);
-            //mCanvas.drawText("Hadia Amiri, Wenshen Zhong", 1800, 103, mPaint);
-            mPaint.setTextSize(120);
+            mHUD.drawScore(mCanvas, mPaint, mScore);
+
             // Draw the apple and the snake
             mApple.draw(mCanvas, mPaint);
             mSnake.draw(mCanvas, mPaint);
 
             mHUD.draw(mCanvas, mPaint);
             //draw names using the method in HUD
-            mHUD.drawAuthors(mCanvas, mPaint);
+            mHUD.drawAuthors();
             // Draw some text while paused
-            if(mPaused){
-
-                // Set the size and color of the mPaint for the text
-                mPaint.setColor(Color.argb(255, 255, 255, 255));
-                mPaint.setTextSize(170);
-
-                // Draw the message
-                // We will give this an international upgrade soon
-                //mCanvas.drawText("Tap To Play!", 200, 700, mPaint);
-                mCanvas.drawText(getResources().
-                                getString(R.string.tap_to_play),
-                        200, 700, mPaint);
-            }
-
-            // Draw text while MANUALLY paused
-            if(mManualPaused) {
-                // Set the size and color of the mPaint for the text
-                mPaint.setColor(Color.argb(255, 255, 255, 255));
-                mPaint.setTextSize(250);
-
-                // Draw the message
-                // We will give this an international upgrade soon
-                //mCanvas.drawText("Tap To Play!", 200, 700, mPaint);
-                mCanvas.drawText("PAUSED", 200, 700, mPaint);
-            }
-
+            mHUD.drawPauseText(mPaused, mManualPaused);
 
             // Unlock the mCanvas and reveal the graphics for this frame
             mSurfaceHolder.unlockCanvasAndPost(mCanvas);
@@ -333,11 +295,4 @@ class SnakeGame extends SurfaceView implements Runnable{
         this.mManualPaused = mManualPaused;
     }
 
-    public void setmPaused(boolean mPaused) {
-        this.mPaused = mPaused;
-    }
-
-    public void setmPlaying(boolean mPlaying) {
-        this.mPlaying = mPlaying;
-    }
 }

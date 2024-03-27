@@ -1,10 +1,14 @@
 package com.csc133.snakeysnake;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 
 import java.util.ArrayList;
 
@@ -13,14 +17,19 @@ public class HUD extends Drawable {
     private int mScreenHeight;
     private int mScreenWidth;
     private ArrayList<Rect> buttons = new ArrayList<Rect>();
+    private Canvas mCanvas;
+    private Paint mPaint;
 
     //  Button index for pause button (Chapter 18)
     static final int PAUSE = 0;
 
-    HUD(Point size) {
+    HUD(Point size, Canvas mCanvas, Paint mPaint) {
         mScreenHeight = size.y;
         mScreenWidth = size.x;
         mTextFormatting = size.x / 50;
+
+        this.mCanvas = mCanvas;
+        this.mPaint = mPaint;
 
         prepareControls();
     }
@@ -41,44 +50,97 @@ public class HUD extends Drawable {
     }
     // Draws the rectangular box for the pause button
     @Override
-    public void draw(Canvas c, Paint p) {
-        p.setColor(Color.argb(255, 77, 77, 77));
-        p.setTextSize(5);
+    public void draw(Canvas mCanvas, Paint mPaint) {
+        mPaint.setColor(Color.argb(255, 77, 77, 77));
+        mPaint.setTextSize(5);
 
         for(Rect rect : buttons) {
-            c.drawRect(rect.left, rect.top, rect.right, rect.bottom, p);
-            drawButtonText("PAUSE", c, p, rect);
+            mCanvas.drawRect(rect.left, rect.top, rect.right, rect.bottom, mPaint);
+            drawButtonText("PAUSE", rect);
         }
-        p.setTextAlign(Paint.Align.LEFT);   // Reset alignment for all other text
+        mPaint.setTextAlign(Paint.Align.LEFT);   // Reset alignment for all other text
     }
 
-    void drawAuthors(Canvas c, Paint p) {
+    void setFont(Context context, Paint mPaint) {
+        Typeface nes = Typeface.createFromAsset(context.getAssets(), "nes.otf");
+        mPaint.setTypeface(nes);
+    }
+
+    void drawBackgroundBitmap(Context context, Canvas c, Paint p) {
+        // Create a background bitmap
+        Bitmap mBitmapBackground = BitmapFactory
+                .decodeResource(context.getResources(),
+                        R.drawable.background);
+
+        // Draw the background bitmap
+        c.drawBitmap(mBitmapBackground, -1920, -1350, p);
+    }
+
+    void drawScore(Canvas mCanvas, Paint mPaint, int score) {
+        // Set the size and color of the mPaint for the text
+        mPaint.setColor(Color.argb(255, 255, 255, 255));
+        mPaint.setTextSize(120);
+
+        // Draw the score
+        mCanvas.drawText("" + score, 20, 120, mPaint);
+    }
+
+    void drawAuthors() {
         int namesWidth = mScreenWidth / 150;
         int namesHeight = mScreenHeight / 12;
         int namesPadding = mScreenWidth / 35;
 
-        p.setColor(Color.argb(255, 77, 77, 77));
-        p.setTextSize(60);
-        p.setTextAlign(Paint.Align.RIGHT);
+        mPaint.setColor(Color.argb(255, 77, 77, 77));
+        mPaint.setTextSize(60);
+        mPaint.setTextAlign(Paint.Align.RIGHT);
 
-        c.drawText("Modified By: Hadia Amiri & Wenshen Zhong", mScreenWidth - namesPadding - namesWidth, namesPadding, p);
+        mCanvas.drawText("Modified By: Hadia Amiri & Wenshen Zhong", mScreenWidth - namesPadding - namesWidth, namesPadding, mPaint);
 
-        p.setTextAlign(Paint.Align.LEFT);   // Reset text alignment to LEFT for all other text
+        mPaint.setTextAlign(Paint.Align.LEFT);   // Reset text alignment to LEFT for all other text following
     }
 
-    private void drawButtonText(String text, Canvas c, Paint p, Rect r) {
-        p.setTextSize(50);
-        p.setTextAlign(Paint.Align.CENTER);
-        p.setColor(Color.argb(255, 255, 255, 255));
+    void drawPauseText(boolean gameOver, boolean manualPaused) {
+        if(gameOver){
+
+            // Set the size and color of the mPaint for the text
+            mPaint.setColor(Color.argb(255, 255, 255, 255));
+            mPaint.setTextSize(170);
+
+            // Draw the message
+            // We will give this an international upgrade soon
+            mCanvas.drawText("Tap To Play!", 200, 700, mPaint);
+        }
+
+        // Draw text while MANUALLY paused
+        if(manualPaused) {
+            // Set the size and color of the mPaint for the text
+            mPaint.setColor(Color.argb(255, 255, 255, 255));
+            mPaint.setTextSize(250);
+
+            // Draw the message
+            // We will give this an international upgrade soon
+            //mCanvas.drawText("Tap To Play!", 200, 700, mPaint);
+            mCanvas.drawText("PAUSED", 200, 700, mPaint);
+        }
+    }
+
+    private void drawButtonText(String text, Rect r) {
+        mPaint.setTextSize(50);
+        mPaint.setTextAlign(Paint.Align.CENTER);
+        mPaint.setColor(Color.argb(255, 255, 255, 255));
         int width = r.width();
 
-        int charsCount = p.breakText(text, true, width, null);
+        int charsCount = mPaint.breakText(text, true, width, null);
         int start = (text.length()-charsCount)/2;
-        c.drawText(text,start,start+charsCount,r.exactCenterX(),r.exactCenterY(),p);
+        mCanvas.drawText(text,start,start+charsCount,r.exactCenterX(),r.exactCenterY(),mPaint);
     }
 
     public ArrayList<Rect> getButtons() {
         return buttons;
+    }
+
+    public void setmCanvas(Canvas mCanvas) {
+        this.mCanvas = mCanvas;
     }
 
 }
