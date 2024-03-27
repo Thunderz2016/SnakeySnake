@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import java.util.Random;
 
-class Apple extends Drawable{
+class Apple extends Drawable implements Spawnable{
 
     // The location of the apple on the grid
     // Not in pixels
@@ -40,11 +40,17 @@ class Apple extends Drawable{
     }
 
     // This is called every time an apple is eaten
-    void spawn(){
+    @Override
+    public void spawn(){
         // Choose two random values and place the apple
         Random random = new Random();
         location.x = random.nextInt(mSpawnRange.x) + 1;
         location.y = random.nextInt(mSpawnRange.y - 1) + 1;
+    }
+
+    @Override
+    public void spawn(int x, int y) {
+        return;
     }
 
     // Let SnakeGame know where the apple is

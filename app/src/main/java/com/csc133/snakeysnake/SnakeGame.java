@@ -3,13 +3,9 @@ package com.csc133.snakeysnake;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -123,7 +119,7 @@ class SnakeGame extends SurfaceView implements Runnable{
     public void newGame() {
 
         // reset the snake
-        mSnake.reset(NUM_BLOCKS_WIDE, mNumBlocksHigh);
+        mSnake.spawn(NUM_BLOCKS_WIDE, mNumBlocksHigh);
 
         // Get the apple ready for dinner
         mApple.spawn();
@@ -213,10 +209,10 @@ class SnakeGame extends SurfaceView implements Runnable{
             mCanvas = mSurfaceHolder.lockCanvas();
             mHUD.setmCanvas(mCanvas);
 
-            mHUD.setFont(context, mPaint);
+            mHUD.setFont(context);
 
             // Draw the background bitmap
-            mHUD.drawBackgroundBitmap(context, mCanvas, mPaint);
+            mHUD.drawBackgroundBitmap(context);
 
             // Draw the score
             mHUD.drawScore(mCanvas, mPaint, mScore);

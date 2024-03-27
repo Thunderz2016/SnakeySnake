@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
-class Snake extends Drawable{
+class Snake extends Drawable implements Spawnable{
 
     // The location in the grid of all the segments
     private ArrayList<Point> segmentLocations;
@@ -116,8 +116,14 @@ class Snake extends Drawable{
         halfWayPoint = mr.x * ss / 2;
     }
 
+    @Override
+    public void spawn() {
+        return;
+    }
+
     // Get the snake ready for a new game
-    void reset(int w, int h) {
+    @Override
+    public void spawn(int w, int h) {
 
         // Reset the heading
         heading = Heading.RIGHT;
