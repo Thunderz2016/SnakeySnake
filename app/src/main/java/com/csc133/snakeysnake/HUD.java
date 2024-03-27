@@ -5,11 +5,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 
 import java.util.ArrayList;
 
-public class HUD {
+public class HUD extends Drawable {
     private int mTextFormatting;
     private int mScreenHeight;
     private int mScreenWidth;
@@ -40,16 +39,9 @@ public class HUD {
 
         buttons.add(pause);
     }
-
-    void draw(Canvas c, Paint p, boolean manualPaused, boolean died) {
-
-        p.setTextSize(250);
-//        c.drawText("");
-
-        drawControls(c, p);
-    }
-
-    void drawControls(Canvas c, Paint p) {
+    // Draws the rectangular box for the pause button
+    @Override
+    public void draw(Canvas c, Paint p) {
         p.setColor(Color.argb(255, 77, 77, 77));
         p.setTextSize(5);
 

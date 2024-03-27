@@ -8,9 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Picture;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
@@ -178,7 +176,6 @@ class SnakeGame extends SurfaceView implements Runnable{
         return false;
     }
 
-
     // Update all the game objects
     public void update() {
 
@@ -207,8 +204,6 @@ class SnakeGame extends SurfaceView implements Runnable{
         }
 
     }
-
-
     // Do all the drawing
     public void draw(Context context) {
         Typeface nes = Typeface.createFromAsset(context.getAssets(), "nes.otf");
@@ -243,7 +238,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             mApple.draw(mCanvas, mPaint);
             mSnake.draw(mCanvas, mPaint);
 
-            mHUD.drawControls(mCanvas, mPaint);
+            mHUD.draw(mCanvas, mPaint);
             //draw names using the method in HUD
             mHUD.drawAuthors(mCanvas, mPaint);
             // Draw some text while paused
