@@ -10,6 +10,8 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import java.util.ArrayList;
 
 public class HUD extends Drawable {
@@ -62,7 +64,7 @@ public class HUD extends Drawable {
     }
 
     void setFont(Context context, Paint mPaint) {
-        Typeface nes = Typeface.createFromAsset(context.getAssets(), "nes.otf");
+        Typeface nes = ResourcesCompat.getFont(context, R.font.nes);
         mPaint.setTypeface(nes);
     }
 
