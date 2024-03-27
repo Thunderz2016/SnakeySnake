@@ -213,10 +213,10 @@ class SnakeGame extends SurfaceView implements Runnable{
             mCanvas = mSurfaceHolder.lockCanvas();
             mHUD.setmCanvas(mCanvas);
 
-            mHUD.setFont(context, mPaint);
+            mHUD.setFont(context);
 
             // Draw the background bitmap
-            mHUD.drawBackgroundBitmap(context, mCanvas, mPaint);
+            mHUD.drawBackgroundBitmap(context);
 
             // Draw the score
             mHUD.drawScore(mCanvas, mPaint, mScore);
