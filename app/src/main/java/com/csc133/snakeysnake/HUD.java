@@ -61,19 +61,19 @@ public class HUD extends Drawable {
         mPaint.setTextAlign(Paint.Align.LEFT);   // Reset alignment for all other text
     }
 
-    void setFont(Context context, Paint mPaint) {
+    void setFont(Context context) {
         Typeface nes = Typeface.createFromAsset(context.getAssets(), "nes.otf");
         mPaint.setTypeface(nes);
     }
 
-    void drawBackgroundBitmap(Context context, Canvas c, Paint p) {
+    void drawBackgroundBitmap(Context context) {
         // Create a background bitmap
         Bitmap mBitmapBackground = BitmapFactory
                 .decodeResource(context.getResources(),
                         R.drawable.background);
 
         // Draw the background bitmap
-        c.drawBitmap(mBitmapBackground, -1920, -1350, p);
+        mCanvas.drawBitmap(mBitmapBackground, -1920, -1350, mPaint);
     }
 
     void drawScore(Canvas mCanvas, Paint mPaint, int score) {
