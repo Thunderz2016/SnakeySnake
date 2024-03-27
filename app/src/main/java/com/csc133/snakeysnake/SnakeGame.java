@@ -215,7 +215,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             mHUD.drawBackgroundBitmap(context);
 
             // Draw the score
-            mHUD.drawScore(mCanvas, mPaint, mScore);
+            mHUD.drawScore(mScore);
 
             // Draw the apple and the snake
             mApple.draw(mCanvas, mPaint);
