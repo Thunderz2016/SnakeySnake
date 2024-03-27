@@ -24,11 +24,16 @@ public class HUD extends Drawable {
 
     //  Button index for pause button (Chapter 18)
     static final int PAUSE = 0;
+    static final int VALUE_FOR_VARYING_SCREEN_SIZES = 50;
+    static final int NUMBER_IN_PROPORTION_TO_SCREEN_WIDTH = 10;
+    static final int NUMBER_IN_PROPORTION_TO_SCREEN_HEIGHT = 12;
+    static final int NUMBER_IN_PROPORTION_TO_PADDING = 90;
+
 
     HUD(Point size, Canvas mCanvas, Paint mPaint) {
         mScreenHeight = size.y;
         mScreenWidth = size.x;
-        mTextFormatting = size.x / 50;
+        mTextFormatting = size.x / VALUE_FOR_VARYING_SCREEN_SIZES;
 
         this.mCanvas = mCanvas;
         this.mPaint = mPaint;
@@ -37,9 +42,9 @@ public class HUD extends Drawable {
     }
 
     private void prepareControls() {
-        int buttonWidth = mScreenWidth / 10;
-        int buttonHeight = mScreenHeight / 12;
-        int buttonPadding = mScreenWidth / 90;
+        int buttonWidth = mScreenWidth / NUMBER_IN_PROPORTION_TO_SCREEN_WIDTH;
+        int buttonHeight = mScreenHeight / NUMBER_IN_PROPORTION_TO_SCREEN_HEIGHT;
+        int buttonPadding = mScreenWidth / NUMBER_IN_PROPORTION_TO_PADDING;
 
         //  Bottom right: Pause button
         Rect pause = new Rect(
@@ -72,10 +77,10 @@ public class HUD extends Drawable {
         // Create a background bitmap
         Bitmap mBitmapBackground = BitmapFactory
                 .decodeResource(context.getResources(),
-                        R.drawable.background);
+                        R.drawable.desert_background1);
 
         // Draw the background bitmap
-        mCanvas.drawBitmap(mBitmapBackground, -1920, -1350, mPaint);
+        mCanvas.drawBitmap(mBitmapBackground, -400, -400, mPaint);
     }
 
     void drawScore(int score) {
@@ -87,7 +92,7 @@ public class HUD extends Drawable {
         mCanvas.drawText("" + score, 20, 120, mPaint);
     }
 
-    void drawAuthors() {
+    void drawText() {
         int namesWidth = mScreenWidth / 150;
         int namesHeight = mScreenHeight / 12;
         int namesPadding = mScreenWidth / 35;
@@ -101,7 +106,7 @@ public class HUD extends Drawable {
         mPaint.setTextAlign(Paint.Align.LEFT);   // Reset text alignment to LEFT for all other text following
     }
 
-    void drawPauseText(boolean gameOver, boolean manualPaused) {
+    void drawText(boolean gameOver, boolean manualPaused) {
         if(gameOver){
 
             // Set the size and color of the mPaint for the text

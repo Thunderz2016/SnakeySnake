@@ -202,12 +202,11 @@ class SnakeGame extends SurfaceView implements Runnable{
     }
     // Do all the drawing
     public void draw(Context context) {
-//        Typeface nes = Typeface.createFromAsset(context.getAssets(), "nes.otf");
-//        mPaint.setTypeface(nes);
         // Get a lock on the mCanvas
         if (mSurfaceHolder.getSurface().isValid()) {
             mCanvas = mSurfaceHolder.lockCanvas();
             mHUD.setmCanvas(mCanvas);
+
 
             mHUD.setFont(context);
 
@@ -223,9 +222,9 @@ class SnakeGame extends SurfaceView implements Runnable{
 
             mHUD.draw(mCanvas, mPaint);
             //draw names using the method in HUD
-            mHUD.drawAuthors();
+            mHUD.drawText();
             // Draw some text while paused
-            mHUD.drawPauseText(mPaused, mManualPaused);
+            mHUD.drawText(mPaused, mManualPaused);
 
             // Unlock the mCanvas and reveal the graphics for this frame
             mSurfaceHolder.unlockCanvasAndPost(mCanvas);

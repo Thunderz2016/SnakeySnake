@@ -12,7 +12,6 @@ public class ButtonController implements InputObserver {
         this.game = game;
     }
 
-    @Override
     public void handleInput(MotionEvent event, ArrayList<Rect> buttons) {
         int i = event.getActionIndex();
         int x = (int) event.getX(i);
