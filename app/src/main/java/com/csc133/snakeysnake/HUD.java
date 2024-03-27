@@ -51,6 +51,7 @@ public class HUD extends Drawable {
         }
         p.setTextAlign(Paint.Align.LEFT);   // Reset alignment for all other text
     }
+
     void drawAuthors(Canvas c, Paint p) {
         int namesWidth = mScreenWidth / 150;
         int namesHeight = mScreenHeight / 12;
@@ -62,7 +63,7 @@ public class HUD extends Drawable {
 
         c.drawText("Modified By: Hadia Amiri & Wenshen Zhong", mScreenWidth - namesPadding - namesWidth, namesPadding, p);
 
-        p.setTextAlign(Paint.Align.LEFT);
+        p.setTextAlign(Paint.Align.LEFT);   // Reset text alignment to LEFT for all other text
     }
 
     private void drawButtonText(String text, Canvas c, Paint p, Rect r) {
