@@ -2,12 +2,11 @@ package com.csc133.snakeysnake;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.MotionEvent;
+
 
 import java.util.ArrayList;
 
@@ -27,23 +26,10 @@ class Snake extends Drawable implements Spawnable{
     private int halfWayPoint;
 
     // For tracking movement Heading
-    private enum Heading {
-        UP, RIGHT, DOWN, LEFT
-    }
-
-    // Start by heading to the right
-    private Heading heading = Heading.RIGHT;
+    SnakeHeading snakeHeading;
 
     // A bitmap for each direction the head can face
-    private Bitmap mBitmapHeadRight;
-    private Bitmap mBitmapHeadLeft;
-    private Bitmap mBitmapHeadUp;
-    private Bitmap mBitmapHeadDown;
-    private Bitmap mBitmapBackground;
-
-    // A bitmap for the body
-    private Bitmap mBitmapBody;
-
+    SnakeBitmap snakeBitmap;
 
     Snake(Context context, Point mr, int ss) {
 
@@ -56,60 +42,8 @@ class Snake extends Drawable implements Spawnable{
         mMoveRange = mr;
 
         // Create and scale the bitmaps
-
-
-        mBitmapHeadRight = BitmapFactory
-                .decodeResource(context.getResources(),
-                        R.drawable.head);
-
-        // Create 3 more versions of the head for different headings
-        mBitmapHeadLeft = BitmapFactory
-                .decodeResource(context.getResources(),
-                        R.drawable.head);
-
-        mBitmapHeadUp = BitmapFactory
-                .decodeResource(context.getResources(),
-                        R.drawable.head);
-
-        mBitmapHeadDown = BitmapFactory
-                .decodeResource(context.getResources(),
-                        R.drawable.head);
-
-        // Modify the bitmaps to face the snake head
-        // in the correct direction
-        mBitmapHeadRight = Bitmap
-                .createScaledBitmap(mBitmapHeadRight,
-                        ss, ss, false);
-
-        // A matrix for scaling
-        Matrix matrix = new Matrix();
-        matrix.preScale(-1, 1);
-
-        mBitmapHeadLeft = Bitmap
-                .createBitmap(mBitmapHeadRight,
-                        0, 0, ss, ss, matrix, true);
-
-        // A matrix for rotating
-        matrix.preRotate(-90);
-        mBitmapHeadUp = Bitmap
-                .createBitmap(mBitmapHeadRight,
-                        0, 0, ss, ss, matrix, true);
-
-        // Matrix operations are cumulative
-        // so rotate by 180 to face down
-        matrix.preRotate(180);
-        mBitmapHeadDown = Bitmap
-                .createBitmap(mBitmapHeadRight,
-                        0, 0, ss, ss, matrix, true);
-
-        // Create and scale the body
-        mBitmapBody = BitmapFactory
-                .decodeResource(context.getResources(),
-                        R.drawable.body);
-
-        mBitmapBody = Bitmap
-                .createScaledBitmap(mBitmapBody,
-                        ss, ss, false);
+        snakeBitmap=new SnakeBitmap(context,ss);
+        snakeHeading= new SnakeHeading();
 
         // The halfway point across the screen in pixels
         // Used to detect which side of screen was pressed
@@ -126,7 +60,7 @@ class Snake extends Drawable implements Spawnable{
     public void spawn(int w, int h) {
 
         // Reset the heading
-        heading = Heading.RIGHT;
+        snakeHeading.reset();
 
         // Delete the old contents of the ArrayList
         segmentLocations.clear();
@@ -149,28 +83,8 @@ class Snake extends Drawable implements Spawnable{
         }
 
         // Move the head in the appropriate heading
-        // Get the existing head position
         Point p = segmentLocations.get(0);
-
-        // Move it appropriately
-        switch (heading) {
-            case UP:
-                p.y--;
-                break;
-
-            case RIGHT:
-                p.x++;
-                break;
-
-            case DOWN:
-                p.y++;
-                break;
-
-            case LEFT:
-                p.x--;
-                break;
-        }
-
+        snakeHeading.movement(p);
     }
 
     boolean detectDeath() {
@@ -216,94 +130,30 @@ class Snake extends Drawable implements Spawnable{
 
     @Override
     public void draw(Canvas canvas, Paint paint) {
-
         // Don't run this code if ArrayList has nothing in it
         if (!segmentLocations.isEmpty()) {
-            // All the code from this method goes here
             // Draw the head
-            switch (heading) {
-                case RIGHT:
-                    canvas.drawBitmap(mBitmapHeadRight,
-                            segmentLocations.get(0).x
-                                    * mSegmentSize,
-                            segmentLocations.get(0).y
-                                    * mSegmentSize, paint);
-                    break;
-
-                case LEFT:
-                    canvas.drawBitmap(mBitmapHeadLeft,
-                            segmentLocations.get(0).x
-                                    * mSegmentSize,
-                            segmentLocations.get(0).y
-                                    * mSegmentSize, paint);
-                    break;
-
-                case UP:
-                    canvas.drawBitmap(mBitmapHeadUp,
-                            segmentLocations.get(0).x
-                                    * mSegmentSize,
-                            segmentLocations.get(0).y
-                                    * mSegmentSize, paint);
-                    break;
-
-                case DOWN:
-                    canvas.drawBitmap(mBitmapHeadDown,
-                            segmentLocations.get(0).x
-                                    * mSegmentSize,
-                            segmentLocations.get(0).y
-                                    * mSegmentSize, paint);
-                    break;
-            }
+            Bitmap direction = snakeHeading.switchHeading(snakeBitmap);
+            drawBit(direction, 0, canvas, paint);
 
             // Draw the snake body one block at a time
             for (int i = 1; i < segmentLocations.size(); i++) {
-                canvas.drawBitmap(mBitmapBody,
-                        segmentLocations.get(i).x
-                                * mSegmentSize,
-                        segmentLocations.get(i).y
-                                * mSegmentSize, paint);
+                drawBit(snakeBitmap.getmBitmapBody(), i, canvas, paint);
             }
         }
     }
 
+    void drawBit(Bitmap headDirection, int location, Canvas canvas, Paint paint){
+        canvas.drawBitmap(headDirection,
+                segmentLocations.get(location).x
+                        * mSegmentSize,
+                segmentLocations.get(location).y
+                        * mSegmentSize, paint);
+    }
+
 
     // Handle changing direction
-    void switchHeading(MotionEvent motionEvent) {
-
-        // Is the tap on the right hand side?
-        if (motionEvent.getX() >= halfWayPoint) {
-            switch (heading) {
-                // Rotate right
-                case UP:
-                    heading = Heading.RIGHT;
-                    break;
-                case RIGHT:
-                    heading = Heading.DOWN;
-                    break;
-                case DOWN:
-                    heading = Heading.LEFT;
-                    break;
-                case LEFT:
-                    heading = Heading.UP;
-                    break;
-
-            }
-        } else {
-            // Rotate left
-            switch (heading) {
-                case UP:
-                    heading = Heading.LEFT;
-                    break;
-                case LEFT:
-                    heading = Heading.DOWN;
-                    break;
-                case DOWN:
-                    heading = Heading.RIGHT;
-                    break;
-                case RIGHT:
-                    heading = Heading.UP;
-                    break;
-            }
-        }
+    void changeDirection(MotionEvent motionEvent){
+        snakeHeading.changeDirection(motionEvent, halfWayPoint);
     }
 }

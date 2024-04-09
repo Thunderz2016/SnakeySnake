@@ -246,7 +246,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
                 if (!mManualPaused) {
                     // Let the Snake class handle the input
-                    mSnake.switchHeading(motionEvent);
+                    mSnake.changeDirection(motionEvent);
                 }
 
                 mButtonController.handleInput(motionEvent, mHUD.getButtons());
