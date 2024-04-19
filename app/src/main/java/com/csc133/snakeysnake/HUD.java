@@ -58,7 +58,7 @@ public class HUD extends Drawable {
     // Draws the rectangular box for the pause button
     @Override
     public void draw(Canvas mCanvas, Paint mPaint) {
-        mPaint.setColor(Color.argb(255, 77, 77, 77));
+        mPaint.setColor(Color.argb(150, 77, 77, 77));
         mPaint.setTextSize(5);
 
         for(Rect rect : buttons) {
@@ -102,6 +102,8 @@ public class HUD extends Drawable {
         mPaint.setTextAlign(Paint.Align.RIGHT);
 
         mCanvas.drawText("Modified By: Hadia Amiri & Wenshen Zhong", mScreenWidth - namesPadding - namesWidth, namesPadding, mPaint);
+        mCanvas.drawText("& Josh Dye & Corliss Yang", mScreenWidth - namesPadding - namesWidth, namesPadding*2, mPaint);
+
 
         mPaint.setTextAlign(Paint.Align.LEFT);   // Reset text alignment to LEFT for all other text following
     }
