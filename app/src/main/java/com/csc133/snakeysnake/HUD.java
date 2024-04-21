@@ -56,6 +56,7 @@ public class HUD extends Drawable {
         buttons.add(pause);
     }
     // Draws the rectangular box for the pause button
+    // As well as the
     @Override
     public void draw(Canvas mCanvas, Paint mPaint) {
         mPaint.setColor(Color.argb(150, 77, 77, 77));
@@ -90,6 +91,15 @@ public class HUD extends Drawable {
 
         // Draw the score
         mCanvas.drawText("" + score, 20, 120, mPaint);
+    }
+
+    void drawHighScore(int score) {
+        // Set the size and color of the mPaint for the text
+        mPaint.setColor(Color.argb(255, 255, 255, 255));
+        mPaint.setTextSize(60);
+
+        // Draw the score
+        mCanvas.drawText("High Score: " + score, 20, 200, mPaint);
     }
 
     void drawText() {
