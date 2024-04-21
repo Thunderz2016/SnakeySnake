@@ -93,13 +93,20 @@ public class HUD extends Drawable {
         mCanvas.drawText("" + score, 20, 120, mPaint);
     }
 
-    void drawHighScore(int score) {
-        // Set the size and color of the mPaint for the text
-        mPaint.setColor(Color.argb(255, 255, 255, 255));
+    void drawHighScore(int highScore, int currentScore) {
+        int currentHigh = highScore;
         mPaint.setTextSize(60);
+        if(currentScore > highScore) {
+            // If high score is beaten, display the high score in green
+            // and sync high score with current score
+            mPaint.setColor(Color.argb(255, 0, 255, 0));
+            mCanvas.drawText("High Score: " + currentScore, 20, 200, mPaint);
+        } else {
+            mCanvas.drawText("High Score: " + highScore, 20, 200, mPaint);
+        }
 
         // Draw the score
-        mCanvas.drawText("High Score: " + score, 20, 200, mPaint);
+
     }
 
     void drawText() {

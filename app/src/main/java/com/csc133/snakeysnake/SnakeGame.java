@@ -182,7 +182,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             // Draw the score
             mHUD.drawScore(mScore);
 
-            mHUD.drawHighScore(mHighScore.getHighScore());
+            mHUD.drawHighScore(mHighScore.getHighScore(), mScore);
 
             // Draw the apple and the snake
             mApple.draw(mCanvas, mPaint);
