@@ -96,7 +96,7 @@ public class HUD extends Drawable {
     void drawHighScore(int highScore, int currentScore) {
         int currentHigh = highScore;
         mPaint.setTextSize(60);
-        if(currentScore > highScore) {
+        if(currentScore >= highScore) {
             // If high score is beaten, display the high score in green
             // and sync high score with current score
             mPaint.setColor(Color.argb(255, 0, 255, 0));
