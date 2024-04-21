@@ -35,6 +35,7 @@ class SnakeGame extends SurfaceView implements Runnable{
     private Snake mSnake;
     // And an apple
     private Apple mApple;
+    private Rotten_Apple mRotApple;
     private Context mContext;
 
     HUD mHUD;
@@ -60,18 +61,16 @@ class SnakeGame extends SurfaceView implements Runnable{
         // Initialize the drawing objects
         mSurfaceHolder = getHolder();
         mPaint = new Paint();
+        Point p= new Point(NUM_BLOCKS_WIDE, mNumBlocksHigh);
 
         //mHUD = new HUD(size);
         // Call the constructors of our two game objects
-        mApple = new Apple(context,
-                new Point(NUM_BLOCKS_WIDE,
-                        mNumBlocksHigh),
-                blockSize);
+        mApple = new Apple(context, p, blockSize);
 
-        mSnake = new Snake(context,
-                new Point(NUM_BLOCKS_WIDE,
-                        mNumBlocksHigh),
-                blockSize);
+        mSnake = new Snake(context,p, blockSize);
+
+        mRotApple=new Rotten_Apple(context,p,blockSize);
+
         mHUD = new HUD(size, mCanvas, mPaint);
     }
 
@@ -135,7 +134,6 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     // Update all the game objects
     public void update() {
-
         // Move the snake
         mSnake.move();
 
@@ -146,9 +144,19 @@ class SnakeGame extends SurfaceView implements Runnable{
             mApple.spawn();
 
             // Add to  mScore
-            mScore = mScore + 1;
+            mScore++;
 
             // Play a sound
+            Audio.playEat(1, 1, 0, 0, 1);
+        }
+
+        if(mScore>5 && mRotApple.getLocation().equals(-10,0)){
+            mRotApple.spawn();
+        }
+
+        if(mSnake.checkDinner(mRotApple.getLocation())){
+            mRotApple.spawn();
+            mScore--;
             Audio.playEat(1, 1, 0, 0, 1);
         }
 
@@ -180,6 +188,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             // Draw the apple and the snake
             mApple.draw(mCanvas, mPaint);
             mSnake.draw(mCanvas, mPaint);
+            mRotApple.draw(mCanvas,mPaint);
 
             mHUD.draw(mCanvas, mPaint);
             //draw names using the method in HUD
