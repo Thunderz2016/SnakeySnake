@@ -246,6 +246,10 @@ class SnakeGame extends SurfaceView implements Runnable{
         mThread.start();
     }
 
+    public void setmScore(int mScore) {
+        this.mScore = mScore;
+    }
+
     public boolean getManualPaused() {
         return mManualPaused;
     }
@@ -254,8 +258,16 @@ class SnakeGame extends SurfaceView implements Runnable{
         return mPaused;
     }
 
+    public HighScore getHighScore() {
+        return mHighScore;
+    }
+
     public void setmManualPaused(boolean mManualPaused) {
         this.mManualPaused = mManualPaused;
+    }
+
+    public void setmPaused(boolean mPaused) {
+        this.mPaused = mPaused;
     }
 
 }
