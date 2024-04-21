@@ -11,18 +11,23 @@ public class HighScore {
     public HighScore(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("HiScore", Context.MODE_PRIVATE);
         mEditor = prefs.edit();
-        mHighScore = prefs.getInt("hi_score", 0);
+        mHighScore = prefs.getInt("HiScore", 0);
     }
 
     public void setHighScore(int score) {
         if(score > mHighScore) {
             mHighScore = score;
-            mEditor.putInt("hi_score", mHighScore);
+            mEditor.putInt("HiScore", mHighScore);
             mEditor.commit();
         }
     }
 
     public int getHighScore() {
         return mHighScore;
+    }
+
+    public void resetHighScore() {
+        mEditor.putInt("HiScore", 0);
+        mEditor.commit();
     }
 }

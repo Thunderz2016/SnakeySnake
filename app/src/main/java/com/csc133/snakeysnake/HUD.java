@@ -24,6 +24,7 @@ public class HUD extends Drawable {
 
     //  Button index for pause button (Chapter 18)
     static final int PAUSE = 0;
+    static final int RESET_HS = 1;
     static final int VALUE_FOR_VARYING_SCREEN_SIZES = 50;
     static final int NUMBER_IN_PROPORTION_TO_SCREEN_WIDTH = 10;
     static final int NUMBER_IN_PROPORTION_TO_SCREEN_HEIGHT = 12;
@@ -53,7 +54,14 @@ public class HUD extends Drawable {
                 mScreenWidth - buttonPadding,
                 mScreenHeight - buttonPadding);
 
-        buttons.add(pause);
+        Rect resetHighScore = new Rect(
+                buttonPadding,
+                mScreenHeight - buttonHeight - buttonPadding,
+                buttonWidth + buttonPadding * 6,
+                mScreenHeight - buttonPadding);;
+
+        buttons.add(PAUSE, pause);
+        buttons.add(RESET_HS, resetHighScore);
     }
     // Draws the rectangular box for the pause button
     // As well as the
@@ -62,9 +70,11 @@ public class HUD extends Drawable {
         mPaint.setColor(Color.argb(150, 77, 77, 77));
         mPaint.setTextSize(5);
 
-        for(Rect rect : buttons) {
-            mCanvas.drawRect(rect.left, rect.top, rect.right, rect.bottom, mPaint);
-            drawButtonText("PAUSE", rect);
+        for(int i = 0; i < buttons.size(); i++) {
+            Rect button = buttons.get(i);
+            mPaint.setColor(Color.argb(150, 77, 77, 77));
+            mCanvas.drawRect(button.left, button.top, button.right, button.bottom, mPaint);
+            drawButtonText(i, button);
         }
         mPaint.setTextAlign(Paint.Align.LEFT);   // Reset alignment for all other text
     }
@@ -150,11 +160,23 @@ public class HUD extends Drawable {
         }
     }
 
-    private void drawButtonText(String text, Rect r) {
+    private void drawButtonText(int index, Rect r) {
         mPaint.setTextSize(50);
         mPaint.setTextAlign(Paint.Align.CENTER);
         mPaint.setColor(Color.argb(255, 255, 255, 255));
         int width = r.width();
+
+        String text;
+        switch(index) {
+            case PAUSE:
+                text = "PAUSE";
+                break;
+            case RESET_HS:
+                text = "Reset HS";
+                break;
+            default:
+                return;
+        }
 
         int charsCount = mPaint.breakText(text, true, width, null);
         int start = (text.length()-charsCount)/2;
