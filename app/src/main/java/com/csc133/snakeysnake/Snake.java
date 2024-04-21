@@ -105,7 +105,8 @@ class Snake extends Drawable implements Spawnable{
         return dead;
     }
     boolean hitScreenEdge() {
-       return snakeHeadLocation.equals(-1,-1)
+       return snakeHeadLocation.x == -1
+               || snakeHeadLocation.y == -1
                || snakeHeadLocation.x > mMoveRange.x
                || snakeHeadLocation.y > mMoveRange.y;
     }
