@@ -26,6 +26,8 @@ class SnakeGame extends SurfaceView implements Runnable{
     // How many points does the player have
     private int mScore;
 
+    private HighScore mHighScore;
+
     // Objects for drawing
     private Canvas mCanvas;
     private SurfaceHolder mSurfaceHolder;
@@ -49,6 +51,7 @@ class SnakeGame extends SurfaceView implements Runnable{
         this.mContext = context;
 
         mButtonController = new ButtonController(this);
+        mHighScore = new HighScore(mContext);
 
         // Work out how many pixels each block is
         int blockSize = size.x / NUM_BLOCKS_WIDE;
@@ -90,6 +93,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         // Setup mNextFrameTime so an update can triggered
         mNextFrameTime = System.currentTimeMillis();
+
     }
 
 
@@ -154,6 +158,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         // Did the snake die?
         if (mSnake.detectDeath()) {
+            mHighScore.setHighScore(mScore);
             // Pause the game ready to start again
             Audio.playDead(1, 1, 0, 0, 1);
 
@@ -176,6 +181,8 @@ class SnakeGame extends SurfaceView implements Runnable{
 
             // Draw the score
             mHUD.drawScore(mScore);
+
+            mHUD.drawHighScore(mHighScore.getHighScore());
 
             // Draw the apple and the snake
             mApple.draw(mCanvas, mPaint);
