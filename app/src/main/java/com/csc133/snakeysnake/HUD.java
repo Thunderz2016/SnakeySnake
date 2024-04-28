@@ -88,7 +88,7 @@ public class HUD extends Drawable {
         // Create a background bitmap
         Bitmap mBitmapBackground = BitmapFactory
                 .decodeResource(context.getResources(),
-                        R.drawable.desert_background1);
+                        R.drawable.background);
 
         // Draw the background bitmap
         mCanvas.drawBitmap(mBitmapBackground, -400, -400, mPaint);
@@ -96,7 +96,7 @@ public class HUD extends Drawable {
 
     void drawScore(int score) {
         // Set the size and color of the mPaint for the text
-        mPaint.setColor(Color.argb(255, 255, 255, 255));
+        colorwhite();
         mPaint.setTextSize(120);
 
         // Draw the score
@@ -121,7 +121,6 @@ public class HUD extends Drawable {
 
     void drawText() {
         int namesWidth = mScreenWidth / 150;
-        int namesHeight = mScreenHeight / 12;
         int namesPadding = mScreenWidth / 35;
 
         mPaint.setColor(Color.argb(255, 77, 77, 77));
@@ -139,7 +138,7 @@ public class HUD extends Drawable {
         if(gameOver){
 
             // Set the size and color of the mPaint for the text
-            mPaint.setColor(Color.argb(255, 255, 255, 255));
+            colorwhite();
             mPaint.setTextSize(170);
 
             // Draw the message
@@ -150,7 +149,7 @@ public class HUD extends Drawable {
         // Draw text while MANUALLY paused
         if(manualPaused) {
             // Set the size and color of the mPaint for the text
-            mPaint.setColor(Color.argb(255, 255, 255, 255));
+            colorwhite();
             mPaint.setTextSize(250);
 
             // Draw the message
@@ -163,7 +162,7 @@ public class HUD extends Drawable {
     private void drawButtonText(int index, Rect r) {
         mPaint.setTextSize(50);
         mPaint.setTextAlign(Paint.Align.CENTER);
-        mPaint.setColor(Color.argb(255, 255, 255, 255));
+        colorwhite();
         int width = r.width();
 
         String text;
@@ -191,4 +190,7 @@ public class HUD extends Drawable {
         this.mCanvas = mCanvas;
     }
 
+    public void colorwhite(){
+        mPaint.setColor(Color.argb(255, 255, 255, 255));
+    }
 }

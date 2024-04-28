@@ -26,6 +26,7 @@ class SnakeGame extends SurfaceView implements Runnable{
     // How many points does the player have
     private int mScore;
 
+    private int halfway;
     private HighScore mHighScore;
 
     // Objects for drawing
@@ -37,6 +38,8 @@ class SnakeGame extends SurfaceView implements Runnable{
     private Snake mSnake;
     // And an apple
     private Apple mApple;
+    private Rotten_Apple mRotApple;
+    private Charmer mCharmer;
     private Context mContext;
 
     HUD mHUD;
@@ -63,18 +66,21 @@ class SnakeGame extends SurfaceView implements Runnable{
         // Initialize the drawing objects
         mSurfaceHolder = getHolder();
         mPaint = new Paint();
+        Point p= new Point(NUM_BLOCKS_WIDE, mNumBlocksHigh);
+
+        halfway = p.x*blockSize/ 2;
+
 
         //mHUD = new HUD(size);
         // Call the constructors of our two game objects
-        mApple = new Apple(context,
-                new Point(NUM_BLOCKS_WIDE,
-                        mNumBlocksHigh),
-                blockSize);
+        mApple = new Apple(context, p, blockSize);
 
-        mSnake = new Snake(context,
-                new Point(NUM_BLOCKS_WIDE,
-                        mNumBlocksHigh),
-                blockSize);
+        mSnake = new Snake(context,p, blockSize);
+
+        mRotApple=new Rotten_Apple(context,p,blockSize);
+
+        mCharmer= new Charmer(context,p, blockSize);
+
         mHUD = new HUD(size, mCanvas, mPaint);
     }
 
@@ -139,22 +145,22 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     // Update all the game objects
     public void update() {
-
         // Move the snake
         mSnake.move();
 
         // Did the head of the snake eat the apple?
-        if(mSnake.checkDinner(mApple.getLocation())){
+        if (mSnake.checkDinner(mApple.getLocation())) {
             // This reminds me of Edge of Tomorrow.
             // One day the apple will be ready!
             mApple.spawn();
 
             // Add to  mScore
-            mScore = mScore + 1;
+            mScore++;
 
             // Play a sound
             Audio.playEat(1, 1, 0, 0, 1);
         }
+        Sabotage();
 
         // Did the snake die?
         if (mSnake.detectDeath()) {
@@ -164,9 +170,26 @@ class SnakeGame extends SurfaceView implements Runnable{
 
             mPaused =true;  // Set to false for God mode ;)
         }
-
     }
-    // Do all the drawing
+
+    public void Sabotage() {
+        if(mScore>0 && mScore % 5 == 0) {
+            if (mRotApple.getLocation().equals(-10, 0)) {
+                mRotApple.spawn();
+            }
+            if (mScore == 10 && mCharmer.getLocation().equals(-10, 0)) {
+                mCharmer.spawn();
+            }
+            if (mScore > 10) {
+                mRotApple.spawn();
+                if (mCharmer.getLocation().equals(-10, 0)) {
+                    mCharmer.spawn();
+                }
+            }
+        }
+    }
+
+        // Do all the drawing
     public void draw(Context context) {
         // Get a lock on the mCanvas
         if (mSurfaceHolder.getSurface().isValid()) {
@@ -187,6 +210,8 @@ class SnakeGame extends SurfaceView implements Runnable{
             // Draw the apple and the snake
             mApple.draw(mCanvas, mPaint);
             mSnake.draw(mCanvas, mPaint);
+            mRotApple.draw(mCanvas,mPaint);
+            mCharmer.draw(mCanvas,mPaint);
 
             mHUD.draw(mCanvas, mPaint);
             //draw names using the method in HUD
@@ -202,7 +227,7 @@ class SnakeGame extends SurfaceView implements Runnable{
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_DOWN:
 
                 if (mPaused) {
                     mPaused = false;
@@ -212,12 +237,23 @@ class SnakeGame extends SurfaceView implements Runnable{
                     return true;
                 }
 
+                mButtonController.handleInput(motionEvent, mHUD.getButtons());
+
                 if (!mManualPaused) {
+                    if(!mCharmer.getLocation().equals(-10,0)){
+                        float newX=motionEvent.getX();
+                        float offset= halfway-newX;
+
+                        if(motionEvent.getX()>halfway) {
+                            newX = newX+offset-1;
+                        }else{
+                            newX=newX+offset+1;
+                        }
+                        motionEvent.setLocation(newX,motionEvent.getY());
+                    }
                     // Let the Snake class handle the input
                     mSnake.changeDirection(motionEvent);
                 }
-
-                mButtonController.handleInput(motionEvent, mHUD.getButtons());
                 break;
 
             default:

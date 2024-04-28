@@ -32,21 +32,21 @@ class Snake extends Drawable implements Spawnable{
     // A bitmap for each direction the head can face
     SnakeBitmap snakeBitmap;
 
-    Snake(Context context, Point mr, int ss) {
+    Snake(Context context, Point p, int blockSize) {
         // Initialize our ArrayList
         segmentLocations = new ArrayList<>();
 
         // Initialize the segment size and movement
         // range from the passed in parameters
-        mSegmentSize = ss;
-        mMoveRange = mr;
+        mSegmentSize = blockSize;
+        mMoveRange = p;
 
         // The halfway point across the screen in pixels
         // Used to detect which side of screen was pressed
-        halfWayPoint = mr.x * ss / 2;
+        halfWayPoint = p.x * blockSize / 2;
 
         // Create and scale the bitmaps
-        snakeBitmap=new SnakeBitmap(context,ss);
+        snakeBitmap=new SnakeBitmap(context,blockSize);
         snakeHeading= new SnakeHeading();
     }
 
