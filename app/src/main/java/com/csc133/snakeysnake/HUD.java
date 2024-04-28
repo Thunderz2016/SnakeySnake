@@ -24,6 +24,7 @@ public class HUD extends Drawable {
 
     //  Button index for pause button (Chapter 18)
     static final int PAUSE = 0;
+    static final int RESET_HS = 1;
     static final int VALUE_FOR_VARYING_SCREEN_SIZES = 50;
     static final int NUMBER_IN_PROPORTION_TO_SCREEN_WIDTH = 10;
     static final int NUMBER_IN_PROPORTION_TO_SCREEN_HEIGHT = 12;
@@ -53,17 +54,27 @@ public class HUD extends Drawable {
                 mScreenWidth - buttonPadding,
                 mScreenHeight - buttonPadding);
 
-        buttons.add(pause);
+        Rect resetHighScore = new Rect(
+                buttonPadding,
+                mScreenHeight - buttonHeight - buttonPadding,
+                buttonWidth + buttonPadding * 6,
+                mScreenHeight - buttonPadding);;
+
+        buttons.add(PAUSE, pause);
+        buttons.add(RESET_HS, resetHighScore);
     }
     // Draws the rectangular box for the pause button
+    // As well as the
     @Override
     public void draw(Canvas mCanvas, Paint mPaint) {
         mPaint.setColor(Color.argb(150, 77, 77, 77));
         mPaint.setTextSize(5);
 
-        for(Rect rect : buttons) {
-            mCanvas.drawRect(rect.left, rect.top, rect.right, rect.bottom, mPaint);
-            drawButtonText("PAUSE", rect);
+        for(int i = 0; i < buttons.size(); i++) {
+            Rect button = buttons.get(i);
+            mPaint.setColor(Color.argb(150, 77, 77, 77));
+            mCanvas.drawRect(button.left, button.top, button.right, button.bottom, mPaint);
+            drawButtonText(i, button);
         }
         mPaint.setTextAlign(Paint.Align.LEFT);   // Reset alignment for all other text
     }
@@ -90,6 +101,22 @@ public class HUD extends Drawable {
 
         // Draw the score
         mCanvas.drawText("" + score, 20, 120, mPaint);
+    }
+
+    void drawHighScore(int highScore, int currentScore) {
+        int currentHigh = highScore;
+        mPaint.setTextSize(60);
+        if(currentScore >= highScore) {
+            // If high score is beaten, display the high score in green
+            // and sync high score with current score
+            mPaint.setColor(Color.argb(255, 0, 255, 0));
+            mCanvas.drawText("High Score: " + currentScore, 20, 200, mPaint);
+        } else {
+            mCanvas.drawText("High Score: " + highScore, 20, 200, mPaint);
+        }
+
+        // Draw the score
+
     }
 
     void drawText() {
@@ -132,11 +159,23 @@ public class HUD extends Drawable {
         }
     }
 
-    private void drawButtonText(String text, Rect r) {
+    private void drawButtonText(int index, Rect r) {
         mPaint.setTextSize(50);
         mPaint.setTextAlign(Paint.Align.CENTER);
         colorwhite();
         int width = r.width();
+
+        String text;
+        switch(index) {
+            case PAUSE:
+                text = "PAUSE";
+                break;
+            case RESET_HS:
+                text = "Reset HS";
+                break;
+            default:
+                return;
+        }
 
         int charsCount = mPaint.breakText(text, true, width, null);
         int start = (text.length()-charsCount)/2;

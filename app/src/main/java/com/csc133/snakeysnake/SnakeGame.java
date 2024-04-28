@@ -27,6 +27,7 @@ class SnakeGame extends SurfaceView implements Runnable{
     private int mScore;
 
     private int halfway;
+    private HighScore mHighScore;
 
     // Objects for drawing
     private Canvas mCanvas;
@@ -53,6 +54,7 @@ class SnakeGame extends SurfaceView implements Runnable{
         this.mContext = context;
 
         mButtonController = new ButtonController(this);
+        mHighScore = new HighScore(mContext);
 
         // Work out how many pixels each block is
         int blockSize = size.x / NUM_BLOCKS_WIDE;
@@ -97,6 +99,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         // Setup mNextFrameTime so an update can triggered
         mNextFrameTime = System.currentTimeMillis();
+
     }
 
 
@@ -157,22 +160,11 @@ class SnakeGame extends SurfaceView implements Runnable{
             // Play a sound
             Audio.playEat(1, 1, 0, 0, 1);
         }
-        //Spawns the sabotages
         Sabotage();
-
-        if(mSnake.checkDinner(mRotApple.getLocation())){
-            mRotApple.spawn();
-            mScore--;
-            Audio.playEat(1, 1, 0, 0, 1);
-        }
-
-        if(mSnake.checkDinner(mCharmer.getLocation())){
-            mCharmer.spawn(-10,0);
-            Audio.playEat(1, 1, 0, 0, 1);
-        }
 
         // Did the snake die?
         if (mSnake.detectDeath()) {
+            mHighScore.setHighScore(mScore);
             // Pause the game ready to start again
             Audio.playDead(1, 1, 0, 0, 1);
 
@@ -212,6 +204,8 @@ class SnakeGame extends SurfaceView implements Runnable{
 
             // Draw the score
             mHUD.drawScore(mScore);
+
+            mHUD.drawHighScore(mHighScore.getHighScore(), mScore);
 
             // Draw the apple and the snake
             mApple.draw(mCanvas, mPaint);
@@ -288,6 +282,10 @@ class SnakeGame extends SurfaceView implements Runnable{
         mThread.start();
     }
 
+    public void setmScore(int mScore) {
+        this.mScore = mScore;
+    }
+
     public boolean getManualPaused() {
         return mManualPaused;
     }
@@ -296,8 +294,16 @@ class SnakeGame extends SurfaceView implements Runnable{
         return mPaused;
     }
 
+    public HighScore getHighScore() {
+        return mHighScore;
+    }
+
     public void setmManualPaused(boolean mManualPaused) {
         this.mManualPaused = mManualPaused;
+    }
+
+    public void setmPaused(boolean mPaused) {
+        this.mPaused = mPaused;
     }
 
 }
