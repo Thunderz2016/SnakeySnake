@@ -38,6 +38,8 @@ class SnakeGame extends SurfaceView implements Runnable{
     private Snake mSnake;
     // And an apple
     private Apple mApple;
+    //Grape
+    private EnergyBoost mGrape;
     private Rotten_Apple mRotApple;
     private Charmer mCharmer;
     private Context mContext;
@@ -75,6 +77,8 @@ class SnakeGame extends SurfaceView implements Runnable{
         // Call the constructors of our two game objects
         mApple = new Apple(context, p, blockSize);
 
+        mGrape = new EnergyBoost(context, new Point(NUM_BLOCKS_WIDE, mNumBlocksHigh), blockSize);
+
         mSnake = new Snake(context,p, blockSize);
 
         mRotApple=new Rotten_Apple(context,p,blockSize);
@@ -93,6 +97,9 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         // Get the apple ready for dinner
         mApple.spawn();
+
+        //Grape
+        mGrape.spawn();
 
         // Reset the mScore
         mScore = 0;
@@ -162,6 +169,18 @@ class SnakeGame extends SurfaceView implements Runnable{
         }
         Sabotage();
 
+        //check to see if the snake ate the grape
+        if(mSnake.checkDinner(mGrape.getLocation())){
+
+            mGrape.spawn();
+
+            // Add to  mScore
+            mScore = mScore + 3;
+
+            // Play a sound
+            Audio.playEat(1, 1, 0, 0, 1);
+        }
+
         // Did the snake die?
         if (mSnake.detectDeath()) {
             mHighScore.setHighScore(mScore);
@@ -212,6 +231,11 @@ class SnakeGame extends SurfaceView implements Runnable{
             mSnake.draw(mCanvas, mPaint);
             mRotApple.draw(mCanvas,mPaint);
             mCharmer.draw(mCanvas,mPaint);
+
+            //draw the grape after every 7 points
+            if(mScore % 7 == 0 && mScore != 0) {
+                mGrape.draw(mCanvas, mPaint);
+            }
 
             mHUD.draw(mCanvas, mPaint);
             //draw names using the method in HUD
