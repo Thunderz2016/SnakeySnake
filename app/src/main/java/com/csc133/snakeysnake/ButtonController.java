@@ -21,7 +21,7 @@ public class ButtonController implements InputObserver {
 
         int eventType = event.getAction() & MotionEvent.ACTION_MASK;
 
-        if (eventType == MotionEvent.ACTION_UP ||
+        if (eventType == MotionEvent.ACTION_DOWN ||
                 eventType == MotionEvent.ACTION_POINTER_UP) {
 
             if (buttons.get(HUD.PAUSE).contains(x, y)) {
