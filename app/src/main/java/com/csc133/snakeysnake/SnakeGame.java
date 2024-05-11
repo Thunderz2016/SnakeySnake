@@ -166,7 +166,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             // This reminds me of Edge of Tomorrow.
             // One day the apple will be ready!
             mApple.spawn();
-
+            mSpike.spawn();
             // Add to  mScore
             mScore++;
 
