@@ -104,6 +104,17 @@ class Snake extends Drawable implements Spawnable{
         }
         return dead;
     }
+
+    // Eaten the spike?
+    boolean detectDeath(Point l) {
+        boolean dead = false;
+        //if the head touches the spike then kill off the snake
+        if(snakeHeadLocation.equals(l)){
+            dead = true;
+        }
+        return dead;
+    }
+
     boolean hitScreenEdge() {
        return snakeHeadLocation.x == -1
                || snakeHeadLocation.y == -1
