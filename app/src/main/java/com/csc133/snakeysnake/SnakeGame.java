@@ -42,6 +42,7 @@ class SnakeGame extends SurfaceView implements Runnable{
     private EnergyBoost mGrape;
     private Rotten_Apple mRotApple;
     private Charmer mCharmer;
+    private Spike mSpike;
     private Context mContext;
 
     HUD mHUD;
@@ -74,7 +75,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
 
         //mHUD = new HUD(size);
-        // Call the constructors of our two game objects
+        // Call the constructors of our game objects
         mApple = new Apple(context, p, blockSize);
 
         mGrape = new EnergyBoost(context, new Point(NUM_BLOCKS_WIDE, mNumBlocksHigh), blockSize);
@@ -84,6 +85,8 @@ class SnakeGame extends SurfaceView implements Runnable{
         mRotApple=new Rotten_Apple(context,p,blockSize);
 
         mCharmer= new Charmer(context,p, blockSize);
+
+        mSpike = new Spike(context, p, blockSize);
 
         mHUD = new HUD(size, mCanvas, mPaint);
     }
@@ -100,6 +103,9 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         //Grape
         mGrape.spawn();
+
+        //Spike
+        mSpike.spawn();
 
         // Reset the mScore
         mScore = 0;
@@ -181,6 +187,20 @@ class SnakeGame extends SurfaceView implements Runnable{
             Audio.playEat(1, 1, 0, 0, 1);
         }
 
+        //if the snake touches the spike it'll die
+        if(mSnake.checkDinner(mSpike.getLocation())){
+
+            //call the detect death method to have the snake die as soon as it touches the spike
+            if(mSnake.detectDeath(mSpike.getLocation())){
+                mHighScore.setHighScore(mScore);
+                // Pause the game ready to start again
+                Audio.playDead(1, 1, 0, 0, 1);
+
+                mPaused =true;
+            }
+        }
+
+
         // Did the snake die?
         if (mSnake.detectDeath()) {
             mHighScore.setHighScore(mScore);
@@ -236,6 +256,8 @@ class SnakeGame extends SurfaceView implements Runnable{
             if(mScore % 7 == 0 && mScore != 0) {
                 mGrape.draw(mCanvas, mPaint);
             }
+            //draw the Spike
+            mSpike.draw(mCanvas, mPaint);
 
             mHUD.draw(mCanvas, mPaint);
             //draw names using the method in HUD
