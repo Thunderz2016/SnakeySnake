@@ -135,6 +135,7 @@ public class HUD extends Drawable {
     }
 
     void drawText(boolean gameOver, boolean manualPaused) {
+
         if(gameOver){
 
             // Set the size and color of the mPaint for the text
