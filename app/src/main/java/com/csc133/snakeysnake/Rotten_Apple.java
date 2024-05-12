@@ -42,7 +42,7 @@ public class Rotten_Apple extends Drawable implements Spawnable {
 
     @Override
     public void spawn(int x, int y) {
-        return;
+        location.set(x,y);
     }
 
     // Let SnakeGame know where the apple is

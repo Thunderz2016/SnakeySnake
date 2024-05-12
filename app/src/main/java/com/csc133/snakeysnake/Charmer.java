@@ -18,7 +18,7 @@ public class Charmer extends Drawable implements Spawnable {
     Charmer(Context context, Point sr, int s){
 
         mSpawnRange = sr;
-        mSize = s*2;
+        mSize = s;
         location.set(-10,0);
 
         // Load the image to the bitmap
