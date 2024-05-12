@@ -89,6 +89,7 @@ class SnakeGame extends SurfaceView implements Runnable{
         mSpike = new Spike(context, p, blockSize);
 
         mHUD = new HUD(size, mCanvas, mPaint);
+
     }
 
 
@@ -106,6 +107,9 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         //Spike
         mSpike.spawn();
+
+        //Bad Apple
+        mRotApple.spawn();
 
         // Reset the mScore
         mScore = 0;
@@ -167,6 +171,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             // One day the apple will be ready!
             mApple.spawn();
             mSpike.spawn();
+            mRotApple.spawn();
             // Add to  mScore
             mScore++;
 
@@ -174,14 +179,32 @@ class SnakeGame extends SurfaceView implements Runnable{
             Audio.playEat(1, 1, 0, 0, 1);
         }
         Sabotage();
+
+        //Has the Snake eaten the Rotten Apple?
         if (mSnake.checkDinner(mRotApple.getLocation())) {
             mRotApple.spawn(-10,0);
-            mScore--;
+
+            //if score is >= 5 subtract 5 from the score
+            //and shorten the length by 5 circles
+            if (mScore >= 5) {
+                mScore = mScore - 5;
+                mSnake.newLength(NUM_BLOCKS_WIDE, mNumBlocksHigh);
+
+            //if score is < 5 then set the snake's length and current score to zero
+            }else{
+                mScore = 0;
+                mSnake.spawn(NUM_BLOCKS_WIDE, mNumBlocksHigh);
+            }
+
+            // Play a sound
+            Audio.playEat(1, 1, 0, 0, 1);
+
         }
         if (mSnake.checkDinner(mCharmer.getLocation())) {
             mCharmer.spawn(-10,0);
             mScore--;
         }
+
         //check to see if the snake ate the grape
         if(mSnake.checkDinner(mGrape.getLocation())){
 
