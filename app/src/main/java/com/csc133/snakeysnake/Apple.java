@@ -65,6 +65,8 @@ class Apple extends Drawable implements Spawnable{
         canvas.drawBitmap(mBitmapApple,
                 location.x * mSize, location.y * mSize, paint);
 
+
+
     }
 
 }
