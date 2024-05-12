@@ -64,6 +64,27 @@ class Snake extends Drawable implements Spawnable{
         segmentLocations.add(new Point(w / 2, h / 2));
         snakeHeadLocation=segmentLocations.get(0);
     }
+    /*
+    Method that will update the length of the snake for the anti-power-ups
+     */
+    public void newLength(int w, int h) {
+
+        //Get the length of the snake
+        long length = segmentLocations.stream().count() - 7;
+
+        snakeHeading.reset();
+        // Delete the old contents of the ArrayList
+        segmentLocations.clear();
+        // Start with a single snake segment
+        segmentLocations.add(new Point(w / 2, h / 2));
+        snakeHeadLocation=segmentLocations.get(0);
+
+        //Add segments to the arraylist based on the new length
+        for (int i =0; i<length; i++){
+            segmentLocations.add(new Point(-10, -10));
+        }
+        snakeHeadLocation=segmentLocations.get(0);
+    }
 
 
     void move() {
@@ -104,7 +125,10 @@ class Snake extends Drawable implements Spawnable{
         }
         return dead;
     }
+    //Eaten the bad apple?
+    void resetLength(){
 
+    }
     // Eaten the spike?
     boolean detectDeath(Point l) {
         boolean dead = false;
