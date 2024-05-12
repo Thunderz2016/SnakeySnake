@@ -160,6 +160,10 @@ public class HUD extends Drawable {
         }
     }
 
+    void homeScreen(){
+
+    }
+
     private void drawButtonText(int index, Rect r) {
         mPaint.setTextSize(50);
         mPaint.setTextAlign(Paint.Align.CENTER);

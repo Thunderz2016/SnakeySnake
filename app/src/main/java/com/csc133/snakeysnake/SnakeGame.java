@@ -97,6 +97,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         // reset the snake
         mSnake.spawn(NUM_BLOCKS_WIDE, mNumBlocksHigh);
+        mSnake.setDead(false);
 
         // Get the apple ready for dinner
         mApple.spawn();
@@ -196,15 +197,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         //if the snake touches the spike it'll die
         if(mSnake.checkDinner(mSpike.getLocation())){
-
-            //call the detect death method to have the snake die as soon as it touches the spike
-            if(mSnake.detectDeath(mSpike.getLocation())){
-                mHighScore.setHighScore(mScore);
-                // Pause the game ready to start again
-                Audio.playDead(1, 1, 0, 0, 1);
-
-                mPaused =true;
-            }
+            mSnake.setDead(true);
         }
 
 
@@ -226,7 +219,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             if (mScore == 10 && mCharmer.getLocation().equals(-10, 0)) {
                 mCharmer.spawn();
             }
-            if (mScore > 10) {
+            if (mScore > 1) {
                 mRotApple.spawn();
                 if (mCharmer.getLocation().equals(-10, 0)) {
                     mCharmer.spawn();
@@ -253,7 +246,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
             mHUD.drawHighScore(mHighScore.getHighScore(), mScore);
 
-            // Draw the apple and the snake
+            // Draw the objects
             mApple.draw(mCanvas, mPaint);
             mSnake.draw(mCanvas, mPaint);
             mRotApple.draw(mCanvas,mPaint);
