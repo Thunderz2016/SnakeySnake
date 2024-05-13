@@ -77,15 +77,15 @@ public class HUD extends Drawable {
                 mScreenHeight - buttonPadding);;
 
         Rect homeButton = new Rect(
-                1000,
+                mScreenWidth / 3,
                 600,
-                2000,
+                mScreenWidth / 2 + 500,
                 800);
 
         Rect replayButton = new Rect(
-                1000,
+                mScreenWidth / 3,
                 900,
-                2000,
+                mScreenWidth / 2 + 500,
                 1100);
 
         buttons.add(PAUSE, pause);
@@ -179,7 +179,7 @@ public class HUD extends Drawable {
 
         if(mDead){
             mPaint.setTextSize(250);
-            mCanvas.drawText("SCORE:"+mScore, 900, 500, mPaint);
+            mCanvas.drawText("SCORE:"+mScore, mScreenWidth / 4, 500, mPaint);
 
         }else if (gameStart) {
                 // Set the size and color of the mPaint for the text

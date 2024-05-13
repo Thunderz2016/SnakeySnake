@@ -143,7 +143,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     // Check to see if it is time for an update
     public boolean updateRequired() {
-        cycles++;
+//        cycles++;
         // Run at 10 frames per second
         final long TARGET_FPS = 10;
         // There are 1000 milliseconds in a second
@@ -316,11 +316,11 @@ class SnakeGame extends SurfaceView implements Runnable{
 
                 mButtonController.handleInput(motionEvent, mHUD.getButtons());
 
-                if(mHomeScreen || mDead) {
-                    mHomeScreen = false;
-                    mDead = false;
-                    return true;
-                }
+//                if(mHomeScreen || mDead) {
+//                    mHomeScreen = false;
+//                    mDead = false;
+//                    return true;
+//                }
 
                 if (mPaused) {
                     mPaused = false;
