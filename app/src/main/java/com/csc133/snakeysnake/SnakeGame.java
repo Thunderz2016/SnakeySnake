@@ -316,8 +316,9 @@ class SnakeGame extends SurfaceView implements Runnable{
 
                 mButtonController.handleInput(motionEvent, mHUD.getButtons());
 
-                if(mHomeScreen) {
+                if(mHomeScreen || mDead) {
                     mHomeScreen = false;
+                    mDead = false;
                     return true;
                 }
 
