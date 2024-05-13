@@ -85,7 +85,13 @@ class Snake extends Drawable implements Spawnable{
         }
         snakeHeadLocation=segmentLocations.get(0);
     }
-
+    /*
+    Method that will add three body segments to the snake whenever it eats a grape (power-up)
+     */
+    public void addLength(int w, int h) {
+        segmentLocations.add(new Point(w / 2, h / 2));
+        segmentLocations.add(new Point(w / 2, h / 2));
+    }
 
     void move() {
         // Move the body

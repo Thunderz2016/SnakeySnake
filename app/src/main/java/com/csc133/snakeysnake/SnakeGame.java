@@ -207,11 +207,11 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         //check to see if the snake ate the grape
         if(mSnake.checkDinner(mGrape.getLocation())){
-
             mGrape.spawn();
 
             // Add to  mScore
             mScore = mScore + 3;
+            mSnake.addLength(NUM_BLOCKS_WIDE, mNumBlocksHigh);
 
             // Play a sound
             Audio.playEat(1, 1, 0, 0, 1);
