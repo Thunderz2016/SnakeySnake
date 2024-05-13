@@ -209,6 +209,7 @@ class SnakeGame extends SurfaceView implements Runnable{
         }
         if (mSnake.checkDinner(mCharmer.getLocation())) {
             mCharmer.location(-10,0);
+            Audio.playKill(1, 1, 0, 0, 1);
 //            mScore--;
         }
 
