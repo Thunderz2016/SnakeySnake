@@ -25,7 +25,7 @@ public class ButtonController implements InputObserver {
                 eventType == MotionEvent.ACTION_POINTER_UP) {
 
         }
-            if (buttons.get(HUD.HOME_SCREEN).contains(x, y)) {
+            if (buttons.get(HUD.HOME_SCREEN).contains(x, y) && game.getDead()) {
                 game.setmHomeScreen(true);
                 game.setmDead(false);
                 game.setmPaused(true);

@@ -207,7 +207,7 @@ class SnakeGame extends SurfaceView implements Runnable{
         }
         if (mSnake.checkDinner(mCharmer.getLocation())) {
             mCharmer.location(-10,0);
-            mScore--;
+//            mScore--;
         }
 
         //check to see if the snake ate the grape
@@ -390,6 +390,9 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     public HighScore getHighScore() {
         return mHighScore;
+    }
+    public boolean getDead() {
+        return mDead;
     }
 
     public void setmManualPaused(boolean mManualPaused) {
