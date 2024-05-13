@@ -10,7 +10,7 @@ import android.graphics.Point;
 import java.util.Random;
 
 /*The image for rotten apple is temp, will change it later*/
-public class Rotten_Apple extends Drawable implements PowerUp {
+public class Rotten_Apple extends Drawable implements Sabotages {
     private Point location = new Point();
     private Point mSpawnRange;
     private int mSize;

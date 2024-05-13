@@ -9,7 +9,7 @@ import android.graphics.Point;
 
 import java.util.Random;
 
-public class Charmer extends Drawable implements PowerUp {
+public class Charmer extends Drawable implements Sabotages {
     private Point location = new Point();
     private Point mSpawnRange;
     private int mSize;

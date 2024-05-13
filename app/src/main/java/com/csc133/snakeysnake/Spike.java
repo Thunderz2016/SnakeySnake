@@ -7,7 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import java.util.Random;
-class Spike extends Drawable implements PowerUp{
+class Spike extends Drawable implements Sabotages{
 
     // The location of the spike on the grid
     // Not in pixels
