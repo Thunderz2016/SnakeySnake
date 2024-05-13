@@ -187,7 +187,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         //Has the Snake eaten the Rotten Apple?
         if (mSnake.checkDinner(mRotApple.getLocation())) {
-            mRotApple.spawn(-10,0);
+            mRotApple.location(-10,0);
 
             //if score is >= 5 subtract 5 from the score
             //and shorten the length by 5 circles
@@ -206,7 +206,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         }
         if (mSnake.checkDinner(mCharmer.getLocation())) {
-            mCharmer.spawn(-10,0);
+            mCharmer.location(-10,0);
             mScore--;
         }
 

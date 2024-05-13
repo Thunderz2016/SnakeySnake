@@ -9,7 +9,7 @@ import android.graphics.Point;
 
 import java.util.Random;
 
-public class Charmer extends Drawable implements Spawnable {
+public class Charmer extends Drawable implements Sabotages {
     private Point location = new Point();
     private Point mSpawnRange;
     private int mSize;
@@ -36,7 +36,7 @@ public class Charmer extends Drawable implements Spawnable {
     }
 
     @Override
-    public void spawn(int x, int y) {
+    public void location(int x, int y) {
         location.set(x,y);
     }
 

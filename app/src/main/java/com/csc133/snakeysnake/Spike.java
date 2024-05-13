@@ -7,7 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import java.util.Random;
-class Spike extends Drawable implements Spawnable{
+class Spike extends Drawable implements Sabotages{
 
     // The location of the spike on the grid
     // Not in pixels
@@ -48,7 +48,7 @@ class Spike extends Drawable implements Spawnable{
     }
 
     @Override
-    public void spawn(int x, int y) {
+    public void location(int x, int y) {
         return;
     }
 
