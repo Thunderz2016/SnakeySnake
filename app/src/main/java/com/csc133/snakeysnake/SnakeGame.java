@@ -17,11 +17,16 @@ class SnakeGame extends SurfaceView implements Runnable{
     // Is the game currently playing and or paused?
     private volatile boolean mPlaying = false;
     private volatile boolean mPaused = true;
+
+    private volatile boolean mHomeScreen=true;
+
+    private volatile boolean mDead=false;
     private volatile boolean mManualPaused = false;
 
     // The size in segments of the playable area
     private final int NUM_BLOCKS_WIDE = 40;
     private int mNumBlocksHigh;
+    private int cycles;
 
     // How many points does the player have
     private int mScore;
@@ -88,8 +93,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         mSpike = new Spike(context, p, blockSize);
 
-        mHUD = new HUD(size, mCanvas, mPaint);
-
+        mHUD = new HUD(context,size, mCanvas, mPaint);
     }
 
 
@@ -98,6 +102,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         // reset the snake
         mSnake.spawn(NUM_BLOCKS_WIDE, mNumBlocksHigh);
+        mSnake.setDead(false);
 
         // Get the apple ready for dinner
         mApple.spawn();
@@ -138,7 +143,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     // Check to see if it is time for an update
     public boolean updateRequired() {
-
+        cycles++;
         // Run at 10 frames per second
         final long TARGET_FPS = 10;
         // There are 1000 milliseconds in a second
@@ -219,15 +224,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         //if the snake touches the spike it'll die
         if(mSnake.checkDinner(mSpike.getLocation())){
-
-            //call the detect death method to have the snake die as soon as it touches the spike
-            if(mSnake.detectDeath(mSpike.getLocation())){
-                mHighScore.setHighScore(mScore);
-                // Pause the game ready to start again
-                Audio.playDead(1, 1, 0, 0, 1);
-
-                mPaused =true;
-            }
+            mSnake.setDead(true);
         }
 
 
@@ -237,7 +234,8 @@ class SnakeGame extends SurfaceView implements Runnable{
             // Pause the game ready to start again
             Audio.playDead(1, 1, 0, 0, 1);
 
-            mPaused =true;  // Set to false for God mode ;)
+            mDead =true;  // Set to false for God mode ;)
+            mPaused=true;
         }
     }
 
@@ -249,8 +247,11 @@ class SnakeGame extends SurfaceView implements Runnable{
             if (mScore == 10 && mCharmer.getLocation().equals(-10, 0)) {
                 mCharmer.spawn();
             }
+
             if (mScore > 10) {
-                mRotApple.spawn();
+                if (cycles%10==0) {
+                    mRotApple.spawn();
+                }
                 if (mCharmer.getLocation().equals(-10, 0)) {
                     mCharmer.spawn();
                 }
@@ -268,32 +269,40 @@ class SnakeGame extends SurfaceView implements Runnable{
 
             mHUD.setFont(context);
 
-            // Draw the background bitmap
-            mHUD.drawBackgroundBitmap(context);
+            // Draw the start screen background bitmap
+            if(mDead) {
+                mHUD.drawText(mPaused, mDead, mManualPaused);
+                mHUD.drawEndScreenBitmap();
+            }else if(mPaused) {
+                mHUD.drawHomeScreenBitmap();
+            }else{
+                mHUD.drawBackgroundBitmap();
+            }
 
             // Draw the score
             mHUD.drawScore(mScore);
 
             mHUD.drawHighScore(mHighScore.getHighScore(), mScore);
 
-            // Draw the apple and the snake
+            // Draw the objects
             mApple.draw(mCanvas, mPaint);
             mSnake.draw(mCanvas, mPaint);
             mRotApple.draw(mCanvas,mPaint);
             mCharmer.draw(mCanvas,mPaint);
+            mSpike.draw(mCanvas, mPaint);
 
             //draw the grape after every 7 points
             if(mScore % 7 == 0 && mScore != 0) {
                 mGrape.draw(mCanvas, mPaint);
             }
-            //draw the Spike
-            mSpike.draw(mCanvas, mPaint);
 
+            mHUD.setmDead(mDead);
             mHUD.draw(mCanvas, mPaint);
             //draw names using the method in HUD
             mHUD.drawText();
-            // Draw some text while paused
-            mHUD.drawText(mPaused, mManualPaused);
+
+                // Draw some text while paused
+                mHUD.drawText(mPaused, mDead, mManualPaused);
 
             // Unlock the mCanvas and reveal the graphics for this frame
             mSurfaceHolder.unlockCanvasAndPost(mCanvas);
@@ -305,15 +314,24 @@ class SnakeGame extends SurfaceView implements Runnable{
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
 
+                mButtonController.handleInput(motionEvent, mHUD.getButtons());
+
+                if(mHomeScreen) {
+                    mHomeScreen = false;
+                    return true;
+                }
+
                 if (mPaused) {
                     mPaused = false;
+                    mDead=false;
                     newGame();
 
                     // Don't want to process snake direction for this tap
                     return true;
                 }
 
-                mButtonController.handleInput(motionEvent, mHUD.getButtons());
+                draw(mContext);
+
 
                 if (!mManualPaused) {
                     if(!mCharmer.getLocation().equals(-10,0)){
@@ -382,4 +400,10 @@ class SnakeGame extends SurfaceView implements Runnable{
         this.mPaused = mPaused;
     }
 
+    public void setmDead(boolean mDead) {
+        this.mDead = mDead;
+    }
+    public void setmHomeScreen(boolean mHomeScreen) {
+        this.mHomeScreen = mHomeScreen;
+    }
 }

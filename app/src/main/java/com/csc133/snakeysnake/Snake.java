@@ -17,6 +17,7 @@ class Snake extends Drawable implements Spawnable{
     private Point currentLocation;
     private Point previousLocation;
     private int mSegmentSize;
+    private boolean dead=false;
 
     // How big is the entire grid
     private Point mMoveRange;
@@ -31,6 +32,15 @@ class Snake extends Drawable implements Spawnable{
 
     // A bitmap for each direction the head can face
     SnakeBitmap snakeBitmap;
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
 
     Snake(Context context, Point p, int blockSize) {
         // Initialize our ArrayList
@@ -112,9 +122,6 @@ class Snake extends Drawable implements Spawnable{
     }
 
     boolean detectDeath() {
-        // Has the snake died?
-        boolean dead = false;
-
         // Hit any of the screen edges
         if (hitScreenEdge()) {
             dead = true;

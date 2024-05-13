@@ -25,13 +25,20 @@ public class HUD extends Drawable {
     //  Button index for pause button (Chapter 18)
     static final int PAUSE = 0;
     static final int RESET_HS = 1;
+    static final int HOME_SCREEN = 2;
+    static final int REPLAY = 3;
     static final int VALUE_FOR_VARYING_SCREEN_SIZES = 50;
     static final int NUMBER_IN_PROPORTION_TO_SCREEN_WIDTH = 10;
     static final int NUMBER_IN_PROPORTION_TO_SCREEN_HEIGHT = 12;
     static final int NUMBER_IN_PROPORTION_TO_PADDING = 90;
 
+    int mScore;
 
-    HUD(Point size, Canvas mCanvas, Paint mPaint) {
+    private volatile boolean mDead;
+    private static Bitmap mBitmapBackground,mBitmapHomeScreen,mBitmapEndScreen;
+
+
+    HUD(Context context,Point size, Canvas mCanvas, Paint mPaint) {
         mScreenHeight = size.y;
         mScreenWidth = size.x;
         mTextFormatting = size.x / VALUE_FOR_VARYING_SCREEN_SIZES;
@@ -39,9 +46,18 @@ public class HUD extends Drawable {
         this.mCanvas = mCanvas;
         this.mPaint = mPaint;
 
+         mBitmapBackground = BitmapFactory
+                .decodeResource(context.getResources(),
+                        R.drawable.background);
+         mBitmapHomeScreen = BitmapFactory
+                .decodeResource(context.getResources(),
+                        R.drawable.start_screen);
+         mBitmapEndScreen = BitmapFactory
+                .decodeResource(context.getResources(),
+                        R.drawable.end_screen);
+
         prepareControls();
     }
-
     private void prepareControls() {
         int buttonWidth = mScreenWidth / NUMBER_IN_PROPORTION_TO_SCREEN_WIDTH;
         int buttonHeight = mScreenHeight / NUMBER_IN_PROPORTION_TO_SCREEN_HEIGHT;
@@ -60,8 +76,23 @@ public class HUD extends Drawable {
                 buttonWidth + buttonPadding * 6,
                 mScreenHeight - buttonPadding);;
 
+        Rect homeButton = new Rect(
+                1000,
+                600,
+                2000,
+                800);
+
+        Rect replayButton = new Rect(
+                1000,
+                900,
+                2000,
+                1100);
+
         buttons.add(PAUSE, pause);
         buttons.add(RESET_HS, resetHighScore);
+        buttons.add(HOME_SCREEN, homeButton);
+        buttons.add(REPLAY, replayButton);
+
     }
     // Draws the rectangular box for the pause button
     // As well as the
@@ -69,8 +100,13 @@ public class HUD extends Drawable {
     public void draw(Canvas mCanvas, Paint mPaint) {
         mPaint.setColor(Color.argb(150, 77, 77, 77));
         mPaint.setTextSize(5);
+        int buttonSize=buttons.size();
 
-        for(int i = 0; i < buttons.size(); i++) {
+        if(!mDead) {
+            buttonSize=buttonSize-2;
+        }
+
+        for(int i = 0; i < buttonSize; i++) {
             Rect button = buttons.get(i);
             mPaint.setColor(Color.argb(150, 77, 77, 77));
             mCanvas.drawRect(button.left, button.top, button.right, button.bottom, mPaint);
@@ -84,18 +120,22 @@ public class HUD extends Drawable {
         mPaint.setTypeface(nes);
     }
 
-    void drawBackgroundBitmap(Context context) {
-        // Create a background bitmap
-        Bitmap mBitmapBackground = BitmapFactory
-                .decodeResource(context.getResources(),
-                        R.drawable.background);
-
-        // Draw the background bitmap
+    void drawBackgroundBitmap() {
         mCanvas.drawBitmap(mBitmapBackground, -400, -400, mPaint);
+    }
+
+    void drawHomeScreenBitmap() {
+        mCanvas.drawBitmap(mBitmapHomeScreen, -500, 0, mPaint);
+    }
+
+    void drawEndScreenBitmap() {
+        mCanvas.drawBitmap(mBitmapEndScreen, -400, 0, mPaint);
     }
 
     void drawScore(int score) {
         // Set the size and color of the mPaint for the text
+        setMScore(score);
+
         colorwhite();
         mPaint.setTextSize(120);
 
@@ -123,7 +163,7 @@ public class HUD extends Drawable {
         int namesWidth = mScreenWidth / 150;
         int namesPadding = mScreenWidth / 35;
 
-        mPaint.setColor(Color.argb(255, 77, 77, 77));
+        mPaint.setColor(Color.argb(255, 255, 255, 255));
         mPaint.setTextSize(60);
         mPaint.setTextAlign(Paint.Align.RIGHT);
 
@@ -134,31 +174,34 @@ public class HUD extends Drawable {
         mPaint.setTextAlign(Paint.Align.LEFT);   // Reset text alignment to LEFT for all other text following
     }
 
-    void drawText(boolean gameOver, boolean manualPaused) {
+    void drawText(boolean gameStart,boolean mDead, boolean manualPaused) {
+        colorwhite();
 
-        if(gameOver){
-
-            // Set the size and color of the mPaint for the text
-            colorwhite();
-            mPaint.setTextSize(170);
-
-            // Draw the message
-            // We will give this an international upgrade soon
-            mCanvas.drawText("Tap To Play!", 200, 700, mPaint);
-        }
-
-        // Draw text while MANUALLY paused
-        if(manualPaused) {
-            // Set the size and color of the mPaint for the text
-            colorwhite();
+        if(mDead){
             mPaint.setTextSize(250);
+            mCanvas.drawText("SCORE:"+mScore, 900, 500, mPaint);
 
-            // Draw the message
-            // We will give this an international upgrade soon
-            //mCanvas.drawText("Tap To Play!", 200, 700, mPaint);
-            mCanvas.drawText("PAUSED", 200, 700, mPaint);
-        }
+        }else if (gameStart) {
+                // Set the size and color of the mPaint for the text
+                mPaint.setTextSize(170);
+
+                // Draw the message
+                // We will give this an international upgrade soon
+                mCanvas.drawText("Tap To Play!", 200, 700, mPaint);
+            }
+
+            // Draw text while MANUALLY paused
+            if (manualPaused) {
+                // Set the size and color of the mPaint for the text
+                mPaint.setTextSize(250);
+
+                // Draw the message
+                // We will give this an international upgrade soon
+                //mCanvas.drawText("Tap To Play!", 200, 700, mPaint);
+                mCanvas.drawText("PAUSED", 200, 700, mPaint);
+            }
     }
+
 
     private void drawButtonText(int index, Rect r) {
         mPaint.setTextSize(50);
@@ -173,6 +216,12 @@ public class HUD extends Drawable {
                 break;
             case RESET_HS:
                 text = "Reset HS";
+                break;
+            case HOME_SCREEN:
+                text = "Home Screen";
+                break;
+            case REPLAY:
+                text = "Replay";
                 break;
             default:
                 return;
@@ -190,8 +239,11 @@ public class HUD extends Drawable {
     public void setmCanvas(Canvas mCanvas) {
         this.mCanvas = mCanvas;
     }
+    public void setmDead(boolean mDead) { this.mDead = mDead; }
+    public void setMScore(int score) {this.mScore = score;}
 
     public void colorwhite(){
         mPaint.setColor(Color.argb(255, 255, 255, 255));
     }
+
 }

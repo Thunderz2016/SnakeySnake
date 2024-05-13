@@ -24,6 +24,13 @@ public class ButtonController implements InputObserver {
         if (eventType == MotionEvent.ACTION_DOWN ||
                 eventType == MotionEvent.ACTION_POINTER_UP) {
 
+        }
+            if (buttons.get(HUD.HOME_SCREEN).contains(x, y)) {
+                game.setmHomeScreen(true);
+                game.setmDead(false);
+                game.setmPaused(true);
+            }
+
             if (buttons.get(HUD.PAUSE).contains(x, y)) {
                 if (!game.getManualPaused() && !game.getPaused()) {
                     game.setmManualPaused(true);
@@ -31,12 +38,12 @@ public class ButtonController implements InputObserver {
                 else if (game.getManualPaused()) {
                     game.setmManualPaused(false);
                 }
+
             } else if (buttons.get(HUD.RESET_HS).contains(x, y)) {
                 game.setmManualPaused(true);
                 showResetDialog();
             }
         }
-    }
 
     public void showResetDialog() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(game.getContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert);
