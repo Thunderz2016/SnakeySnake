@@ -17,6 +17,9 @@ class SnakeGame extends SurfaceView implements Runnable{
     // Is the game currently playing and or paused?
     private volatile boolean mPlaying = false;
     private volatile boolean mPaused = true;
+
+    private volatile boolean mHomeScreen=true;
+
     private volatile boolean mDead=false;
     private volatile boolean mManualPaused = false;
 
@@ -222,7 +225,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             if (mScore == 10 && mCharmer.getLocation().equals(-10, 0)) {
                 mCharmer.spawn();
             }
-            
+
             if (mScore > 10) {
                 if (cycles%10==0) {
                     mRotApple.spawn();
@@ -246,6 +249,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
             // Draw the start screen background bitmap
             if(mDead) {
+                mHUD.drawText(mPaused, mDead, mManualPaused);
                 mHUD.drawEndScreenBitmap();
             }else if(mPaused) {
                 mHUD.drawHomeScreenBitmap();
@@ -263,17 +267,17 @@ class SnakeGame extends SurfaceView implements Runnable{
             mSnake.draw(mCanvas, mPaint);
             mRotApple.draw(mCanvas,mPaint);
             mCharmer.draw(mCanvas,mPaint);
+            mSpike.draw(mCanvas, mPaint);
 
             //draw the grape after every 7 points
             if(mScore % 7 == 0 && mScore != 0) {
                 mGrape.draw(mCanvas, mPaint);
             }
-            //draw the Spike
-            mSpike.draw(mCanvas, mPaint);
 
-                mHUD.draw(mCanvas, mPaint);
-                //draw names using the method in HUD
-                mHUD.drawText();
+            mHUD.setmDead(mDead);
+            mHUD.draw(mCanvas, mPaint);
+            //draw names using the method in HUD
+            mHUD.drawText();
 
                 // Draw some text while paused
                 mHUD.drawText(mPaused, mDead, mManualPaused);
@@ -288,6 +292,13 @@ class SnakeGame extends SurfaceView implements Runnable{
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
 
+                mButtonController.handleInput(motionEvent, mHUD.getButtons());
+
+                if(mHomeScreen) {
+                    mHomeScreen = false;
+                    return true;
+                }
+
                 if (mPaused) {
                     mPaused = false;
                     mDead=false;
@@ -297,7 +308,8 @@ class SnakeGame extends SurfaceView implements Runnable{
                     return true;
                 }
 
-                mButtonController.handleInput(motionEvent, mHUD.getButtons());
+                draw(mContext);
+
 
                 if (!mManualPaused) {
                     if(!mCharmer.getLocation().equals(-10,0)){
@@ -366,4 +378,10 @@ class SnakeGame extends SurfaceView implements Runnable{
         this.mPaused = mPaused;
     }
 
+    public void setmDead(boolean mDead) {
+        this.mDead = mDead;
+    }
+    public void setmHomeScreen(boolean mHomeScreen) {
+        this.mHomeScreen = mHomeScreen;
+    }
 }
