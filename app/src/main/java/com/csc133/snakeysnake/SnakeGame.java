@@ -62,7 +62,7 @@ class SnakeGame extends SurfaceView implements Runnable{
         this.mContext = context;
 
         mButtonController = new ButtonController(this);
-        mHighScore = new HighScore(mContext);
+        mHighScore = HighScore.getInstance(context);
 
         // Work out how many pixels each block is
         int blockSize = size.x / NUM_BLOCKS_WIDE;

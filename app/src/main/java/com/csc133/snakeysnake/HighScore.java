@@ -8,10 +8,19 @@ public class HighScore {
 
     private final SharedPreferences.Editor mEditor;
 
-    public HighScore(Context context) {
+    private static HighScore highScore;
+
+    private HighScore(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("HiScore", Context.MODE_PRIVATE);
         mEditor = prefs.edit();
         mHighScore = prefs.getInt("HiScore", 0);
+    }
+
+    public static HighScore getInstance(Context context) {
+        if(highScore == null) {
+            highScore = new HighScore(context);
+        }
+        return highScore;
     }
 
     public void setHighScore(int score) {
