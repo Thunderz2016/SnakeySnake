@@ -179,7 +179,7 @@ public class HUD extends Drawable {
 
         if(mDead){
             mPaint.setTextSize(250);
-            mCanvas.drawText("SCORE:"+mScore, mScreenWidth / 4, 500, mPaint);
+            mCanvas.drawText("SCORE: "+mScore, mScreenWidth / 4, 500, mPaint);
 
         }else if (gameStart) {
                 // Set the size and color of the mPaint for the text

@@ -41,7 +41,8 @@ public class Audio{
             descriptor = assetManager.openFd("get_apple.ogg");
             mEat_ID = mSP.load(descriptor, 0);
 
-            descriptor = assetManager.openFd("snake_death.ogg");
+//            descriptor = assetManager.openFd("snake_death.ogg");
+            descriptor = assetManager.openFd("death3.wav");
             mCrashID = mSP.load(descriptor, 0);
 
         } catch (IOException e) {

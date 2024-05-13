@@ -143,7 +143,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     // Check to see if it is time for an update
     public boolean updateRequired() {
-//        cycles++;
+        cycles++;
         // Run at 10 frames per second
         final long TARGET_FPS = 10;
         // There are 1000 milliseconds in a second
@@ -204,7 +204,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             }
 
             // Play a sound
-            Audio.playEat(1, 1, 0, 0, 1);
+//            Audio.playEat(1, 1, 0, 0, 1);
 
         }
         if (mSnake.checkDinner(mCharmer.getLocation())) {
@@ -233,6 +233,7 @@ class SnakeGame extends SurfaceView implements Runnable{
         // Did the snake die?
         if (mSnake.detectDeath()) {
             mHighScore.setHighScore(mScore);
+            mCharmer.reset();
             // Pause the game ready to start again
             Audio.playDead(1, 1, 0, 0, 1);
 
@@ -250,14 +251,14 @@ class SnakeGame extends SurfaceView implements Runnable{
                 mCharmer.spawn();
             }
 
-            if (mScore > 10) {
+//            if (mScore > 10) {
                 if (cycles%10==0) {
                     mRotApple.spawn();
                 }
-                if (mCharmer.getLocation().equals(-10, 0)) {
+                if (mCharmer.getLocation().equals(-10, 0) && mScore % 3 == 0) {
                     mCharmer.spawn();
                 }
-            }
+//            }
         }
     }
 

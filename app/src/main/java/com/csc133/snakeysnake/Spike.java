@@ -35,7 +35,7 @@ class Spike extends Drawable implements Sabotages{
         mBitmapSpike = BitmapFactory.decodeResource(context.getResources(), R.drawable.spikythorn);
 
         // Resize the bitmap
-        mBitmapSpike = Bitmap.createScaledBitmap(mBitmapSpike, s*2, s*2, false);
+        mBitmapSpike = Bitmap.createScaledBitmap(mBitmapSpike, s, s, false);
     }
 
     // This is called every time a spike is eaten

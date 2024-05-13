@@ -24,7 +24,7 @@ public class Charmer extends Drawable implements Sabotages {
         // Load the image to the bitmap
         mBitmapCharmer = BitmapFactory.decodeResource(context.getResources(), R.drawable.charm);
         // Resize the bitmap
-        mBitmapCharmer = Bitmap.createScaledBitmap(mBitmapCharmer, s, s, false);
+        mBitmapCharmer = Bitmap.createScaledBitmap(mBitmapCharmer, s * 2, s * 2, false);
     }
 
     @Override
@@ -33,6 +33,10 @@ public class Charmer extends Drawable implements Sabotages {
         Random random = new Random();
         location.x = random.nextInt(mSpawnRange.x) + 1;
         location.y = random.nextInt(mSpawnRange.y - 1) + 1;
+    }
+
+    public void reset() {
+        location.set(-10,0);
     }
 
     @Override
