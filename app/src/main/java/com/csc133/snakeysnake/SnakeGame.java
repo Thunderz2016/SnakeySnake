@@ -197,8 +197,10 @@ class SnakeGame extends SurfaceView implements Runnable{
 
             //if score is < 5 then set the snake's length and current score to zero
             }else{
-                mScore = 0;
-                mSnake.spawn(NUM_BLOCKS_WIDE, mNumBlocksHigh);
+//                mScore = 0;
+//                mSnake.spawn(NUM_BLOCKS_WIDE, mNumBlocksHigh);
+                mSnake.setDead(true);
+
             }
 
             // Play a sound
