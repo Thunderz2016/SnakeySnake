@@ -58,11 +58,11 @@ public class Audio{
         }
     }
 
-    public static void playBackgroundMusic (int i, int j, int k, int l, int m) {
-
+    public static void playBackgroundMusic(int i, int j, int k, int l, int m) {
+        mSP.play(mBgm_ID, i, j, k, -1, m);
     }
     public static void playEat(int i, int j, int k, int l, int m){
-        mSP.play(mEat_ID, i, j, k, -1, m);  // This audio file will loop endlessly
+        mSP.play(mEat_ID, i, j, k, l, m);
     }
 
     public static void playDead(int i, int j, int k, int l, int m){
