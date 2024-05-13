@@ -312,15 +312,15 @@ class SnakeGame extends SurfaceView implements Runnable{
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_UP:
 
                 mButtonController.handleInput(motionEvent, mHUD.getButtons());
 
-//                if(mHomeScreen || mDead) {
-//                    mHomeScreen = false;
-//                    mDead = false;
-//                    return true;
-//                }
+                if(mHomeScreen) {
+                    mHomeScreen = false;
+                    mDead = false;
+                    return true;
+                }
 
                 if (mPaused) {
                     mPaused = false;
@@ -331,7 +331,6 @@ class SnakeGame extends SurfaceView implements Runnable{
                     return true;
                 }
 
-                draw(mContext);
 
 
                 if (!mManualPaused) {
