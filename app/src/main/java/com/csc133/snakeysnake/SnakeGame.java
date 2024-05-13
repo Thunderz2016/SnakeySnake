@@ -197,20 +197,15 @@ class SnakeGame extends SurfaceView implements Runnable{
 
             //if score is < 5 then set the snake's length and current score to zero
             }else{
-//                mScore = 0;
-//                mSnake.spawn(NUM_BLOCKS_WIDE, mNumBlocksHigh);
                 mSnake.setDead(true);
-
             }
 
             // Play a sound
-//            Audio.playEat(1, 1, 0, 0, 1);
 
         }
         if (mSnake.checkDinner(mCharmer.getLocation())) {
             mCharmer.location(-10,0);
             Audio.playKill(1, 1, 0, 0, 1);
-//            mScore--;
         }
 
         //check to see if the snake ate the grape
@@ -252,14 +247,14 @@ class SnakeGame extends SurfaceView implements Runnable{
                 mCharmer.spawn();
             }
 
-//            if (mScore > 10) {
+            if (mScore > 10) {
                 if (cycles%10==0) {
                     mRotApple.spawn();
                 }
                 if (mCharmer.getLocation().equals(-10, 0) && mScore % 3 == 0) {
                     mCharmer.spawn();
                 }
-//            }
+            }
         }
     }
 
