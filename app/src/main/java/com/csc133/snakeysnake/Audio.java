@@ -17,6 +17,7 @@ public class Audio{
     private static int mCrashID = -1;
     private static int mKillID = -1;
     private static int mBgm_ID = -1;
+    private static int mCharmerID = -1;
 
 
 
@@ -39,7 +40,7 @@ public class Audio{
             AssetManager assetManager = context.getAssets();
             AssetFileDescriptor descriptor;
 
-            descriptor = assetManager.openFd("get_apple.ogg");
+            descriptor = assetManager.openFd("get_apple_new.mp3");
             mEat_ID = mSP.load(descriptor, 0);
 
 //            descriptor = assetManager.openFd("snake_death.ogg");
@@ -48,6 +49,9 @@ public class Audio{
 
             descriptor = assetManager.openFd("hitHelmet.wav");
             mKillID = mSP.load(descriptor, 0);
+
+            descriptor = assetManager.openFd("trumpet.mp3");
+            mCharmerID = mSP.load(descriptor, 0);
 
         } catch (IOException e) {
             // Error
@@ -64,5 +68,9 @@ public class Audio{
 
     public static void playKill(int i, int j, int k, int l, int m) {
         mSP.play(mKillID, i, j, k, l, m);
+    }
+
+    public static void playTrumpet(int i, int j, int k, int l, int m) {
+        mSP.play(mCharmerID, i, j, k, l, m);
     }
 }

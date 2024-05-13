@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import java.util.Random;
 
 class SnakeGame extends SurfaceView implements Runnable{
 
@@ -49,6 +50,7 @@ class SnakeGame extends SurfaceView implements Runnable{
     private Charmer mCharmer;
     private Spike mSpike;
     private Context mContext;
+    private Random mRandom = new Random();
 
     HUD mHUD;
     ButtonController mButtonController;
@@ -60,6 +62,8 @@ class SnakeGame extends SurfaceView implements Runnable{
         super(context);
 
         this.mContext = context;
+
+
 
         mButtonController = new ButtonController(this);
         mHighScore = HighScore.getInstance(context);
@@ -193,7 +197,8 @@ class SnakeGame extends SurfaceView implements Runnable{
             //and shorten the length by 5 circles
             if (mScore >= 5) {
                 mScore = mScore - 5;
-                mSnake.newLength(NUM_BLOCKS_WIDE, mNumBlocksHigh);
+//                mSnake.newLength(NUM_BLOCKS_WIDE, mNumBlocksHigh);
+                mSnake.setDead(true);
 
             //if score is < 5 then set the snake's length and current score to zero
             }else{
@@ -204,6 +209,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         }
         if (mSnake.checkDinner(mCharmer.getLocation())) {
+            mScore++;
             mCharmer.location(-10,0);
             Audio.playKill(1, 1, 0, 0, 1);
         }
@@ -244,6 +250,7 @@ class SnakeGame extends SurfaceView implements Runnable{
                 mRotApple.spawn();
             }
             if (mScore == 10 && mCharmer.getLocation().equals(-10, 0)) {
+                Audio.playTrumpet(1, 1, 0, 0, 1);
                 mCharmer.spawn();
             }
 
@@ -251,8 +258,9 @@ class SnakeGame extends SurfaceView implements Runnable{
                 if (cycles%10==0) {
                     mRotApple.spawn();
                 }
-                if (mCharmer.getLocation().equals(-10, 0) && mScore % 3 == 0) {
+                if (mCharmer.getLocation().equals(-10, 0) && mRandom.nextInt(10) % 2 == 0) {
                     mCharmer.spawn();
+                    Audio.playTrumpet(1, 1, 0, 0, 1);
                 }
             }
         }

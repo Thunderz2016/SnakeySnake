@@ -33,6 +33,7 @@ public class Charmer extends Drawable implements Sabotages {
         Random random = new Random();
         location.x = random.nextInt(mSpawnRange.x) + 1;
         location.y = random.nextInt(mSpawnRange.y - 1) + 1;
+
     }
 
     public void reset() {
