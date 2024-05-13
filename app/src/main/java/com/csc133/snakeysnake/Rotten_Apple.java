@@ -10,7 +10,7 @@ import android.graphics.Point;
 import java.util.Random;
 
 /*The image for rotten apple is temp, will change it later*/
-public class Rotten_Apple extends Drawable implements Spawnable {
+public class Rotten_Apple extends Drawable implements PowerUp {
     private Point location = new Point();
     private Point mSpawnRange;
     private int mSize;
@@ -41,7 +41,7 @@ public class Rotten_Apple extends Drawable implements Spawnable {
     }
 
     @Override
-    public void spawn(int x, int y) {
+    public void location(int x, int y) {
         location.set(x,y);
     }
 

@@ -12,7 +12,7 @@ import java.util.Random;
     Grape is one of the power-ups in the game
     By eating a grape every 7 score the energy level/score will be increased by 3
  */
-public class EnergyBoost extends Drawable implements Spawnable{
+public class EnergyBoost extends Drawable implements PowerUp{
 
     // The location of the grape on the grid
     private Point location = new Point();
@@ -50,7 +50,7 @@ public class EnergyBoost extends Drawable implements Spawnable{
     }
 
     @Override
-    public void spawn(int x, int y) {
+    public void location(int x, int y) {
         return;
     }
 

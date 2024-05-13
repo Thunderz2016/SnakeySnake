@@ -175,11 +175,11 @@ class SnakeGame extends SurfaceView implements Runnable{
         }
         Sabotage();
         if (mSnake.checkDinner(mRotApple.getLocation())) {
-            mRotApple.spawn(-10,0);
+            mRotApple.location(-10,0);
             mScore--;
         }
         if (mSnake.checkDinner(mCharmer.getLocation())) {
-            mCharmer.spawn(-10,0);
+            mCharmer.location(-10,0);
             mScore--;
         }
         //check to see if the snake ate the grape
