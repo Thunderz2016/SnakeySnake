@@ -15,6 +15,8 @@ public class Audio{
     private static SoundPool mSP;
     private static int mEat_ID = -1;
     private static int mCrashID = -1;
+    private static int mKillID = -1;
+    private static int mBgm_ID = -1;
 
 
 
@@ -38,6 +40,9 @@ public class Audio{
             AssetFileDescriptor descriptor;
 
             // Prepare the sounds in memory
+            descriptor = assetManager.openFd("bgm.wav");
+            mBgm_ID = mSP.load(descriptor, 0);
+
             descriptor = assetManager.openFd("get_apple.ogg");
             mEat_ID = mSP.load(descriptor, 0);
 
@@ -45,16 +50,26 @@ public class Audio{
             descriptor = assetManager.openFd("death3.wav");
             mCrashID = mSP.load(descriptor, 0);
 
+            descriptor = assetManager.openFd("hitHelmet.wav");
+            mKillID = mSP.load(descriptor, 0);
+
         } catch (IOException e) {
             // Error
         }
     }
 
+    public static void playBackgroundMusic (int i, int j, int k, int l, int m) {
+
+    }
     public static void playEat(int i, int j, int k, int l, int m){
-        mSP.play(mEat_ID, i, j, k, l, m);
+        mSP.play(mEat_ID, i, j, k, -1, m);  // This audio file will loop endlessly
     }
 
     public static void playDead(int i, int j, int k, int l, int m){
         mSP.play(mCrashID, i, j, k, l, m);
+    }
+
+    public static void playKill(int i, int j, int k, int l, int m) {
+        mSP.play(mKillID, i, j, k, l, m);
     }
 }
